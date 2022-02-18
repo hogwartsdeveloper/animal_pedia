@@ -4,16 +4,17 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native"
 
 interface buttonProps {
     name: string;
-    onPress: () => void
+    onPress: () => void;
+    container: boolean;
 }
 
-const Button: FC<buttonProps> = ({ name, onPress }) => {
+const Button: FC<buttonProps> = ({ name, onPress, container }) => {
     return (
         <TouchableOpacity 
-            style={styles.buttonContainer}
+            style={container ? styles.buttonContainer: null}
             onPress={onPress}
         >
-            <Text style={styles.buttonText}>{name}</Text>
+            <Text style={[styles.buttonText, !container ? styles.buttonBlack : null]}>{name}</Text>
         </TouchableOpacity>
     );
 };
@@ -30,6 +31,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '600',
         color: '#ffdb3e'
+    },
+    buttonBlack: {
+        color: '#111'
     }
 })
 

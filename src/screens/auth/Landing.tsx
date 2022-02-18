@@ -9,14 +9,16 @@ const Landing: FC<landingProps> = ({ navigation }) => {
         <View style={styles.container}>
             <Logo name="Animal Pedia" />
             <View>
-                <Button name="Создать новый аккаунт" onPress={() => navigation.navigate('SignUp')}/>
-                <TouchableOpacity
+                <Button 
+                    name="Создать новый аккаунт" 
+                    onPress={() => navigation.navigate('SignUp')}
+                    container={true}
+                />
+                <Button 
+                    name="Войти"
                     onPress={() => navigation.navigate("Login")}
-                >
-                    <Text style={[styles.buttonText, styles.buttonLogin]}>
-                        Войти
-                    </Text>
-                </TouchableOpacity>
+                    container={false}
+                />
             </View>
         </View>
     )
@@ -27,16 +29,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    buttonText: {
-        textAlign: 'center',
-        fontWeight: '600',
-    },
-    buttonSingUp: {
-        color: '#ffdb3e'
-    },
-    buttonLogin: {
-        color: '#111'
     }
 })
 
