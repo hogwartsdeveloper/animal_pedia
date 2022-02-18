@@ -1,53 +1,71 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore"
 import { FC, useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native"
-import { Button, Logo } from "../../components";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import { app, auth } from "../../../firebase";
+import { Button, Input, Logo } from "../../components";
 import { signUpProps } from "../../type";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 const SignUp: FC<signUpProps> = ({ navigation }) => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const onSignUp = () => {
+        if(name && email && password) {
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+                const db = getFirestore(app);
+                const docRef = doc(db, "users", auth.currentUser?.uid ? auth.currentUser?.uid : "")
+                setDoc(docRef, {
+                    name, email
+                })
+                alert("Welcome baby!")
+            })
+            .catch((error) => console.log(error))
+        } else {
+            alert("Заполните все поля!")
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Logo name="Animal Pedia"/>
             <View>
-                <View style={styles.inputContainer}>
-                    <View style={{marginRight: 15}}>
-                        <FontAwesome5 name="cat" size={24} color="black" />
-                    </View>
-                    <TextInput 
-                        placeholder="Введите имя"
-                        onChangeText={(name) => setName(name)}
-                    />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <View style={{marginRight: 15}}>
-                        <MaterialIcons name="email" size={24} color="black" />
-                    </View>
-                    <TextInput 
-                        placeholder="Введите email"
-                        onChangeText={(email) => setEmail(email)}
-                    />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <View style={{marginRight: 15}}>
-                        <FontAwesome5 name="lock" size={24} color="black" />
-                    </View>
-                    <TextInput 
-                        placeholder="Введите пароль"
-                        onChangeText={(password) => setPassword(password)}
-                    />
-                </View>
+                <Input 
+                    placeholder="Введите имя" 
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                    icon={true}
+                    iconName="cat"
+                />
+                <Input 
+                    placeholder="Введите email" 
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    icon={true}
+                    iconName="email"
+                />
+                <Input 
+                    placeholder="Введите пароль" 
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    icon={true}
+                    iconName="lock"
+                />
 
                 <Button 
                     name="Создать новый аккаунт" 
-                    onPress={() => console.log("SignUp")} 
+                    onPress={onSignUp} 
                     container={true}
                 />
+
+                <View style={styles.linkContainer}>
+                    <Text>У вас уже есть аккаунт?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                        <Text style={styles.linkItem}>Войти</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )
@@ -59,15 +77,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 2,
-        paddingHorizontal: 20,
-        borderColor: '#fbd52c',
-        borderRadius: 5,
-        paddingVertical: 10,
-        marginBottom: 7
+    linkContainer: {
+        flexDirection: 'row'
+    },
+    linkItem: {
+        marginLeft: 5,
+        color: '#0c9af6',
+        fontWeight: '600'
     }
 })
 
