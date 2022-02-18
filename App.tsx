@@ -4,9 +4,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { FC, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { auth } from "./firebase";
-import { LandingScreen, MainTab } from "./src/screens";
+import { LandingScreen, LoginScreen, MainTab, SignUpScreen } from "./src/screens";
+import { RootStackParamList } from "./src/type";
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const App: FC = () => {
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -36,7 +37,9 @@ const App: FC = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Landing">
-                    <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }}/>
+                    <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="SignUp" component={SignUpScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         )
@@ -44,7 +47,7 @@ const App: FC = () => {
 
     return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="Landing">
+          <Stack.Navigator initialRouteName="MainTab">
               <Stack.Screen name="MainTab" component={MainTab}/>
           </Stack.Navigator>
       </NavigationContainer>
