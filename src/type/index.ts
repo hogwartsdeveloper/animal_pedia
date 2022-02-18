@@ -7,4 +7,5 @@ export type RootStackParamList = {
     SignUp: undefined;
 }
 
-export type Props = NativeStackScreenProps<RootStackParamList, 'Landing'>;
+export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
+export type signUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
