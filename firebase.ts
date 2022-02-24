@@ -2,14 +2,23 @@ import * as firebase from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBy5MCn7_p1SNfVAAapBThdlipoJbQp8I0",
-    authDomain: "animal-pedia-fc1fe.firebaseapp.com",
-    projectId: "animal-pedia-fc1fe",
-    storageBucket: "animal-pedia-fc1fe.appspot.com",
-    messagingSenderId: "697458469709",
-    appId: "1:697458469709:web:2edc2ba3735d01ae31a504",
-    measurementId: "G-Z6H6S38QKB"
-};
+
+    apiKey: "AIzaSyC0zhQ12P1FPlTC43gjRRKZlFVgwU5s8Y8",
+  
+    authDomain: "animal-pedia-62de3.firebaseapp.com",
+  
+    projectId: "animal-pedia-62de3",
+  
+    storageBucket: "animal-pedia-62de3.appspot.com",
+  
+    messagingSenderId: "512602881432",
+  
+    appId: "1:512602881432:web:a48a2a81166336a4c8ffed",
+  
+    measurementId: "G-QQXYVFC5WJ"
+  
+  };
+  
 
 let app: firebase.FirebaseApp;
 

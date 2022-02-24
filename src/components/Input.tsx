@@ -9,11 +9,19 @@ interface inputProps {
     value: string;
     icon: boolean;
     iconName?: "email" | "lock" | "cat";
+    style?: object;
 }
 
-const Input: FC<inputProps> = ({ placeholder, onChangeText, value, icon, iconName }) => {
+const Input: FC<inputProps> = ({ 
+    placeholder, 
+    onChangeText, 
+    value, 
+    icon, 
+    iconName,
+    style
+}) => {
     return (
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, style]}>
             {icon 
                 ? 
                 <View style={styles.iconContainer}>
