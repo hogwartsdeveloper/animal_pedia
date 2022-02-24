@@ -1,6 +1,10 @@
-import { Text, View } from "react-native"
 import { auth } from "../../firebase";
-import { Button } from "../components";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { AddPost, Feed } from "./main";
+
+
+const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
     const logout = () => {
@@ -8,10 +12,19 @@ const MainTab = () => {
     }
 
     return (
-        <View>
-            <Text>MainTab</Text>
-            <Button name="logout" onPress={logout} container={true}/>
-        </View>
+        <Tab.Navigator>
+            <Tab.Screen 
+                name="Лента" 
+                component={Feed}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                    )
+                }}
+            />
+            <Tab.Screen name="Add" component={AddPost} />
+            <Tab.Screen name="Profile" component={AddPost} />
+        </Tab.Navigator>
     )
 }
 
