@@ -5,6 +5,7 @@ export type RootStackParamList = {
     MainTab: undefined;
     Login: undefined;
     SignUp: undefined;
+    Save: undefined;
 }
 
 export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
