@@ -10,6 +10,8 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 import { app, auth } from "../../../../firebase";
 import { saveProps } from "../../../type";
 import { Feather } from "@expo/vector-icons";
+import { useActions } from "../../../hooks/useActions";
+import { sendNotification } from "../../../redux/actions/user";
 
 const Save: FC<saveProps> = ({ route, navigation }) => {
     const [caption, setCaption] = useState<string>("");
@@ -17,6 +19,8 @@ const Save: FC<saveProps> = ({ route, navigation }) => {
     const [error, setError] = useState(false);
     const [keyword, setKeyword] = useState<string>("");
     const [data, setData] = useState<void | string>("");
+
+    const { fetchUserPosts } = useActions();
 
 
     useLayoutEffect(() => {
@@ -90,12 +94,29 @@ const Save: FC<saveProps> = ({ route, navigation }) => {
             const colRef = doc(collection(fireDoc, "userPosts"));
             setDoc(colRef, object)
                 .then((result) => {
+                    fetchUserPosts();
                     navigation.navigation.popToTop();
                 })
                 .catch((error) => {
                     setUploading(false);
                     setError(true);
-                })
+                });
+            
+            var pattern = /\B@[a-z0-9_-]+/gi;
+            let array = caption.match(pattern);
+
+            if (array !== null) {
+                for (let i = 0; i < array.length; i++) {
+                    const db = getFirestore(app);
+                    const userCol = collection(db, "users")
+                    const q = query(userCol, where("username", "==", array[i].substring(1)))
+                    onSnapshot(q, (snapshot) => {
+                        snapshot.forEach((doc) => {
+                            sendNotification(doc.data().notificationToken, "New tag", `${auth.currentUser?.displayName} Tagged you in a post`, { type: 0, user: auth.currentUser?.uid})
+                        })
+                    })
+                }
+            }
         }
         
     }
@@ -191,7 +212,7 @@ const Save: FC<saveProps> = ({ route, navigation }) => {
                                     :
 
                                     <Video
-                                        source={{ uri: route.params.source }}
+                                        source={{ uri: route.params.source ? route.params.source : '' }}
                                         shouldPlay={true}
                                         isLooping={true}
                                         resizeMode="cover"

@@ -11,8 +11,8 @@ export type RootStackParamList = {
 }
 
 type SaveRoute = {
-    source: string;
-    imageSource: string | undefined;
+    source: string | undefined;
+    imageSource: string | undefined | null;
     type: number;
 }
 

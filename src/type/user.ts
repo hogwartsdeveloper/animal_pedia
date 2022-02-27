@@ -8,6 +8,7 @@ export interface UserState {
 export enum UserActionTypes {
     USER_STATE_CHANGE = "USER_STATE_CHANGE",
     USER_POSTS_STATE_CHANGE = "USER_POSTS_STATE_CHANGE",
+    USER_FOLLOWING_STATE_CHANGE = "USER_FOLLOWING_STATE_CHANGE",
     USER_CHATS_STATE_CHANGE = "USER_CHATS_STATE_CHANGE",
     CLEAR_DATA = "CLEAR_DATA"
 }
@@ -19,7 +20,12 @@ interface UserStateChangeAction {
 
 interface UserPostsStateChangeAction {
     type: UserActionTypes.USER_POSTS_STATE_CHANGE;
-    payload: any;
+    payload: any[];
+}
+
+interface UserFollowingStateChangeAction {
+    type: UserActionTypes.USER_FOLLOWING_STATE_CHANGE;
+    payload: any[];
 }
 
 interface UserChatsStateChangeAction {
@@ -31,4 +37,4 @@ interface ClearDataAction {
     type: UserActionTypes.CLEAR_DATA;
 }
 
-export type UserAction = UserStateChangeAction | UserPostsStateChangeAction | UserChatsStateChangeAction | ClearDataAction;
+export type UserAction = UserStateChangeAction | UserPostsStateChangeAction | UserChatsStateChangeAction | ClearDataAction | UserFollowingStateChangeAction;
