@@ -1,14 +1,15 @@
-import { useState } from "react"
+import { FC, useState } from "react"
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
-import { container, text, utils } from "../../styles";
+import { container, text, utils } from "../../../styles";
 import { MentionsInput } from "react-mentions";
 // @ts-ignore
 import MentionsTextInput from 'react-native-mentions';
 import { collection, getFirestore, onSnapshot, query, where } from "firebase/firestore";
-import { app, auth } from "../../../firebase";
+import { app, auth } from "../../../../firebase";
+import { saveProps } from "../../../type";
 
-const Save = () => {
+const Save: FC<saveProps> = ({ route }) => {
     const [caption, setCaption] = useState<string>("");
     const [uploading, setUploading] = useState(false);
     const [keyword, setKeyword] = useState<string>("");
@@ -94,6 +95,9 @@ const Save = () => {
                                     horizontal={true}
                                     MaxVisibleRowCount={3}
                                 />
+                            </View>
+                            <View>
+                                {route.params}
                             </View>
                         </View>
                     </View>

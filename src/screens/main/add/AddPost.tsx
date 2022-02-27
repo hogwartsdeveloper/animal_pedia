@@ -4,15 +4,16 @@ import { CameraType } from "expo-camera/build/Camera.types";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import * as VideoThumbnails from "expo-video-thumbnails";
-import { FC, LegacyRef, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FC, LegacyRef, ReactChild, ReactNode, useEffect, useRef, useState } from "react";
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { utils } from "../../styles";
+import { container, utils } from "../../../styles";
+import { addPostProps } from "../../../type";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
 
-const AddPost: FC = () => {
+const AddPost: FC<addPostProps> = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [cameraType, setCameraType] = useState<CameraType>(Camera.Constants.Type.back);
     const [isPreview, setIsPreview] = useState(false);
@@ -20,7 +21,9 @@ const AddPost: FC = () => {
     const [isFlash, setIsFlash] = useState(false);
     const [isVideoRecording, setIsVideoRecording] = useState(false);
     const [type, setType] = useState(0);
+    const [showGallery, setShowGallery] = useState(true);
     const [galleryItems, setGallertItems] = useState<MediaLibrary.PagedInfo<MediaLibrary.Asset>>();
+    const [galleryScrollRef, setGalleryScrollRef] = useState<ScrollView | null>(null);
     const [galleryPickedImage, setGalleryPickedImage] = useState<MediaLibrary.Asset>();
     const cameraRef: LegacyRef<Camera> | undefined = useRef(null);
     const isFocused = useIsFocused();
@@ -65,8 +68,9 @@ const AddPost: FC = () => {
                 if (videoRecordPromise) {
                     setIsVideoRecording(true);
                     const data = await videoRecordPromise;
-                    const sourse = data.uri;
-                    let imageSource = await generateThumbnail(sourse)
+                    const source = data.uri;
+                    let imageSource = await generateThumbnail(source)
+                    navigation.navigate('Save', { source, imageSource, type})
                 }
             } catch (error) {
                 console.warn(error);
@@ -87,6 +91,7 @@ const AddPost: FC = () => {
     };
 
     const renderCaptureControl = () => {
+        return (
         <View>
             <View style={styles.renderCaptureControl}>
                 <TouchableOpacity disabled={!isCameraReady} onPress={() => setIsFlash(!isFlash)}>
@@ -108,6 +113,18 @@ const AddPost: FC = () => {
                 }
             </View>
         </View>
+        )
+    }
+
+    if (showGallery) {
+        return (
+            <ScrollView
+                ref={(ref) => setGalleryScrollRef(ref)}
+                style={[container.container, utils.backgroundWhite]}
+            >
+
+            </ScrollView>
+        )
     }
 
     return (
@@ -129,7 +146,7 @@ const AddPost: FC = () => {
 
             <View style={styles.renderCaptureControlContainer}>
                 <View>
-
+                    {renderCaptureControl()}
                 </View>
             </View>
         </View>

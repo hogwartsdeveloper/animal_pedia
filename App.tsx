@@ -4,8 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { FC, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { auth } from "./firebase";
-import { LandingScreen, LoginScreen, MainTab, SignUpScreen } from "./src/screens";
-import { Save } from "./src/screens/main";
+import { LandingScreen, LoginScreen, MainTab, SignUpScreen, SaveScreen } from "./src/screens";
 import { RootStackParamList } from "./src/type";
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -50,7 +49,7 @@ const App: FC = () => {
       <NavigationContainer>
           <Stack.Navigator initialRouteName="MainTab">
               <Stack.Screen name="MainTab" component={MainTab}/>
-              <Stack.Screen name='Save' component={Save} />
+              <Stack.Screen name='Save' component={SaveScreen} />
           </Stack.Navigator>
       </NavigationContainer>
     )
