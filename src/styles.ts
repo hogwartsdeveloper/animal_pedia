@@ -22,9 +22,18 @@ const utils = StyleSheet.create({
     }
 });
 
+const navbar = StyleSheet.create({
+    image: {
+        padding: 20
+    }
+})
+
 const container = StyleSheet.create({
     container: {
         flex: 1
+    },
+    image: {
+        aspectRatio: 1 / 1
     }
 });
 
@@ -37,4 +46,4 @@ const text = StyleSheet.create({
     }
 })
 
-export { utils, container, text }
+export { utils, container, text, navbar }

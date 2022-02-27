@@ -1,19 +1,104 @@
-import { FC, useState } from "react"
+import { FC, useLayoutEffect, useState } from "react"
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import { container, text, utils } from "../../../styles";
-import { MentionsInput } from "react-mentions";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
+import { container, navbar, text, utils } from "../../../styles";
+import { Video } from "expo-av";
 // @ts-ignore
 import MentionsTextInput from 'react-native-mentions';
-import { collection, getFirestore, onSnapshot, query, where } from "firebase/firestore";
+import { collection, doc, getFirestore, onSnapshot, query, serverTimestamp, setDoc, where } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
 import { app, auth } from "../../../../firebase";
 import { saveProps } from "../../../type";
+import { Feather } from "@expo/vector-icons";
 
-const Save: FC<saveProps> = ({ route }) => {
+const Save: FC<saveProps> = ({ route, navigation }) => {
     const [caption, setCaption] = useState<string>("");
     const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState(false);
     const [keyword, setKeyword] = useState<string>("");
     const [data, setData] = useState<void | string>("");
+
+
+    useLayoutEffect(() => {
+        navigation.navigation.setOptions({
+            headerRight: () => (
+                <Feather style={navbar.image} name="check" size={24} color="green" onPress={() => uploadingImage()}/>
+            )
+        })
+    })
+
+    const uploadingImage = async () => {
+        if(uploading) {
+            return;
+        }
+        setUploading(true);
+        let downloadURLStill = null;
+        const childPath: string = `post/${auth.currentUser?.uid}/${Math.random().toString(36)}`
+
+        let downloadURL = await SaveStorage(childPath, route.params.source)
+
+        if (route.params.imageSource !== null) {
+            downloadURLStill = await SaveStorage(childPath, route.params.imageSource)
+        }
+        savePostData(downloadURLStill, downloadURL)
+    }
+
+    const SaveStorage = async (path: string, image?: string) => {
+        if (image === 'default') {
+            return '';
+        }
+
+        if (image !== undefined) {
+            const storage = getStorage(app);
+            const fileRef = ref(storage, path);
+    
+            const response = await fetch(image);
+            const blob =  await response.blob();
+    
+            const uploadTask = uploadBytesResumable(fileRef, blob);
+    
+            let url = ''
+    
+            getDownloadURL(uploadTask.snapshot.ref)
+                .then((downloadURL) => {
+                    console.log(`File availd at ${downloadURL}`);
+                    url =  downloadURL;
+                })
+    
+            return url;
+        }
+    }
+
+    const savePostData = (downloadURLStill?: string | null, downloadURL?: string) => {
+        let object = {
+            downloadURL,
+            downloadURLStill,
+            caption,
+            likesCount: 0,
+            commentsCount: 0,
+            type: route.params.type,
+            creation: serverTimestamp()
+        }
+        if (downloadURLStill !== null) {
+            object.downloadURLStill = downloadURLStill
+        }
+
+        
+        if (auth.currentUser?.uid) {
+            const db = getFirestore(app);
+            const fireDoc = doc(db, 'posts', auth.currentUser?.uid);
+            const colRef = doc(collection(fireDoc, "userPosts"));
+            setDoc(colRef, object)
+                .then((result) => {
+                    navigation.navigation.popToTop();
+                })
+                .catch((error) => {
+                    setUploading(false);
+                    setError(true);
+                })
+        }
+        
+    }
 
 
     const renderSuggestionsRow = ({ item }: any, hidePanel: any) => {
@@ -97,9 +182,31 @@ const Save: FC<saveProps> = ({ route }) => {
                                 />
                             </View>
                             <View>
-                                {route.params}
+                                {route.params.type ? 
+                                    <Image 
+                                        style={[container.image, {backgroundColor: 'black'}]}
+                                        source={{ uri: route.params.source}}
+                                    />
+
+                                    :
+
+                                    <Video
+                                        source={{ uri: route.params.source }}
+                                        shouldPlay={true}
+                                        isLooping={true}
+                                        resizeMode="cover"
+                                        style={{ aspectRatio: 1 / 1, backgroundColor: 'black' }}
+                                    />
+                                }
                             </View>
                         </View>
+                        <Snackbar
+                            visible={error}
+                            duration={2000}
+                            onDismiss={() => setError(false)}
+                        >
+                            Something Went Wrong!
+                        </Snackbar>
                     </View>
                 )
             }
