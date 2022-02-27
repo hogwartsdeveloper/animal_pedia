@@ -32,7 +32,7 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
     useEffect(() => {
         (async () => {
             const cameraPermissions = await Camera.requestCameraPermissionsAsync();
-            const galleryPermissions = await Camera.requestCameraPermissionsAsync();
+            const galleryPermissions = await MediaLibrary.requestPermissionsAsync();
 
             if (cameraPermissions.status === 'granted' && galleryPermissions.status === 'granted') {
                 const getPhotos = await MediaLibrary.getAssetsAsync(
