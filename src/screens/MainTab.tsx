@@ -37,6 +37,12 @@ const MainTab = () => {
             <Tab.Screen
                 name="Профиль" 
                 component={Profile}
+                listeners={({ navigation }) => ({
+                    tabPress: event => {
+                        event.preventDefault();
+                        navigation.navigate("Profile", {uid: auth.currentUser?.uid})
+                    }
+                })}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account" color={color} size={26} />

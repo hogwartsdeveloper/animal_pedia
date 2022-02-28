@@ -6,6 +6,9 @@ const utils = StyleSheet.create({
     marginBottom: {
         marginBottom: 20
     },
+    marginBottomSmall: {
+        marginBottom: 10
+    },
     justifyCenter: {
         justifyContent: 'center'
     },
@@ -19,6 +22,18 @@ const utils = StyleSheet.create({
         paddingTop: 15,
         paddingRight: 15,
         paddingLeft: 15
+    },
+    profileImageBig: {
+        width: 80,
+        height: 80,
+        borderRadius: 80 / 2,
+    },
+    padding10Sides: {
+        paddingRight: 10,
+        paddingLeft: 10
+    },
+    noPadding: {
+
     },
     borderTopGray: {
         borderTopWidth: 1,
@@ -47,6 +62,19 @@ const container = StyleSheet.create({
     },
     image: {
         aspectRatio: 1 / 1
+    },
+    profileInfo: {
+        padding: 25,
+        flexDirection: 'row'
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 'auto'
+    },
+    horizontal: {
+        flexDirection: 'row',
+        display: 'flex'
     }
 });
 

@@ -8,6 +8,7 @@ export type RootStackParamList = {
     SignUp: undefined;
     Save: SaveRoute;
     AddPost: undefined;
+    Profile: ProfileRoute;
 }
 
 type SaveRoute = {
@@ -16,8 +17,13 @@ type SaveRoute = {
     type: number;
 }
 
+type ProfileRoute = {
+    uid: string;
+}
+
 export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
 export type signUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 export type loginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export type addPostProps = NativeStackScreenProps<RootStackParamList, 'AddPost'>;
 export type saveProps = NativeStackScreenProps<RootStackParamList, 'Save'>;
+export type profileProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;

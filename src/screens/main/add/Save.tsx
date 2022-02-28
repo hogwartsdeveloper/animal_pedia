@@ -44,6 +44,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
         if (route.params.imageSource !== null) {
             downloadURLStill = await SaveStorage(childPath, route.params.imageSource)
         }
+
         savePostData(downloadURLStill, downloadURL)
     }
 
@@ -63,12 +64,6 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
     
             let url = ''
     
-            getDownloadURL(uploadTask.snapshot.ref)
-                .then((downloadURL) => {
-                    console.log(`File availd at ${downloadURL}`);
-                    url =  downloadURL;
-                })
-    
             uploadTask.on('state_changed', 
                 (snapshot) => {
                     console.log(`transferred: ${snapshot.bytesTransferred}`);
@@ -84,7 +79,6 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                         })
                 }
             );
-            
             return url;
         }
     }
