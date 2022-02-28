@@ -20,7 +20,4 @@ export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>
 export type signUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 export type loginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export type addPostProps = NativeStackScreenProps<RootStackParamList, 'AddPost'>;
-export type saveProps = {
-    navigation: NativeStackScreenProps<RootStackParamList, 'Save'>;
-    route: RouteProp<RootStackParamList, 'Save'>;
-}
+export type saveProps = NativeStackScreenProps<RootStackParamList, 'Save'>;

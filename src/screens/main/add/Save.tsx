@@ -13,7 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { useActions } from "../../../hooks/useActions";
 import { sendNotification } from "../../../redux/actions/user";
 
-const Save: FC<saveProps> = ({ route, navigation }) => {
+const Save: FC<saveProps> = ({ navigation, route }) => {
     const [caption, setCaption] = useState<string>("");
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(false);
@@ -24,7 +24,7 @@ const Save: FC<saveProps> = ({ route, navigation }) => {
 
 
     useLayoutEffect(() => {
-        navigation.navigation.setOptions({
+        navigation.setOptions({
             headerRight: () => (
                 <Feather style={navbar.image} name="check" size={24} color="green" onPress={() => uploadingImage()}/>
             )
@@ -95,7 +95,7 @@ const Save: FC<saveProps> = ({ route, navigation }) => {
             setDoc(colRef, object)
                 .then((result) => {
                     fetchUserPosts();
-                    navigation.navigation.popToTop();
+                    navigation.popToTop();
                 })
                 .catch((error) => {
                     setUploading(false);
