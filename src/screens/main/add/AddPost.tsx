@@ -205,7 +205,7 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <View style={[{ flex: 1}, utils.borderTopGray]}>
-                    <FlatList 
+                    <FlatList
                         numColumns={3}
                         horizontal={false}
                         data={galleryItems?.assets}

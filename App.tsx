@@ -8,6 +8,9 @@ import { auth } from "./firebase";
 import { store } from "./src/redux";
 import { LandingScreen, LoginScreen, MainTab, SignUpScreen, SaveScreen } from "./src/screens";
 import { RootStackParamList } from "./src/type";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core'])
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
