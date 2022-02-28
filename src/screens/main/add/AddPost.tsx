@@ -176,18 +176,15 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
         return <Text style={styles.text}>No access to camera</Text>
     }
 
-    if (showGallery) {
+    const showGalleryHeader = () => {
         return (
-            <ScrollView
-                ref={(ref) => setGalleryScrollRef(ref)}
-                style={[container.container, utils.backgroundWhite]}
-            >
+            <>
                 <View style={{ aspectRatio: 1 / 1, height: WINDOW_WIDTH}}>
-                    <Image 
-                        style={{ flex: 1, aspectRatio: 1 / 1, height: WINDOW_WIDTH}}
-                        source={{ uri: galleryPickedImage?.uri}}
-                    />
-                </View>
+                        <Image 
+                            style={{ flex: 1, aspectRatio: 1 / 1, height: WINDOW_WIDTH}}
+                            source={{ uri: galleryPickedImage?.uri}}
+                        />
+                    </View>
                 <View style={{ justifyContent: 'flex-end', alignItems: 'center', marginRight: 20, marginVertical: 10, flexDirection: 'row' }}>
                     <TouchableOpacity
                         style={{ alignItems: 'center', backgroundColor: 'gray', paddingHorizontal: 20, paddingVertical: 10, 
@@ -204,28 +201,41 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
                         <Feather style={{ padding: 10 }} name={"camera"} size={20} color="white" />
                     </TouchableOpacity>
                 </View>
-                <View style={[{ flex: 1}, utils.borderTopGray]}>
-                    <FlatList
-                        numColumns={3}
-                        horizontal={false}
-                        data={galleryItems?.assets}
-                        contentContainerStyle={{
-                            flexGrow: 1
-                        }}
-                        renderItem={({ item}) => (
-                            <TouchableOpacity
-                                style={[container.containerImage, utils.borderWhite]}
-                                onPress={() => { galleryScrollRef?.scrollTo({ x: 0, y: 0, animated: true}); setGalleryPickedImage(item); }}
-                            >
-                                <Image 
-                                    style={container.image}
-                                    source={{ uri: item.uri }}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    />
-                </View>
-            </ScrollView>
+            </>
+        )
+    }
+
+    if (showGallery) {
+        return (
+            <FlatList 
+                ListHeaderComponent={showGalleryHeader}
+                style={[container.container, utils.backgroundWhite]}
+                data={[1]}
+                renderItem={({ item }) => (
+                    <View style={[{ flex: 1}, utils.borderTopGray]}>
+                        <FlatList
+                            numColumns={3}
+                            horizontal={false}
+                            data={galleryItems?.assets}
+                            contentContainerStyle={{
+                                flexGrow: 1
+                            }}
+                            renderItem={({ item}) => (
+                                <TouchableOpacity
+                                    style={[container.containerImage, utils.borderWhite]}
+                                    onPress={() => { galleryScrollRef?.scrollTo({ x: 0, y: 0, animated: true}); setGalleryPickedImage(item); }}
+                                >
+                                    <Image 
+                                        style={container.image}
+                                        source={{ uri: item.uri }}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                        />
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+            />
         )
     }
 
