@@ -69,6 +69,22 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                     url =  downloadURL;
                 })
     
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    console.log(`transferred: ${snapshot.bytesTransferred}`);
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref)
+                        .then((downloadURL) => {
+                            console.log(`File available at ${downloadURL}`);
+                            url = downloadURL;
+                        })
+                }
+            );
+            
             return url;
         }
     }
