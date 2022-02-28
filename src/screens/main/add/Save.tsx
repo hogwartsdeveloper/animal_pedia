@@ -26,7 +26,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Feather style={navbar.image} name="check" size={24} color="green" onPress={() => uploadingImage()}/>
+                <Feather style={navbar.image} name="check" size={24} color="green" onPress={uploadingImage}/>
             )
         })
     })
@@ -36,34 +36,17 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
             return;
         }
         setUploading(true);
-        let downloadURLStill = null;
-        const childPath: string = `post/${auth.currentUser?.uid}/${Math.random().toString(36)}`
+        let uri: string | undefined = route.params.source;
+        const childPath = `posts/${auth.currentUser?.uid}/${Math.random().toString(36)}`
 
-        let downloadURL = await SaveStorage(childPath, route.params.source)
-
-        if (route.params.imageSource !== null) {
-            downloadURLStill = await SaveStorage(childPath, route.params.imageSource)
-        }
-
-        savePostData(downloadURLStill, downloadURL)
-    }
-
-    const SaveStorage = async (path: string, image?: string) => {
-        if (image === 'default') {
-            return '';
-        }
-
-        if (image !== undefined) {
+        if (uri) {
+            const response = await fetch(uri);
+            const blob = await response.blob();
             const storage = getStorage(app);
-            const fileRef = ref(storage, path);
-    
-            const response = await fetch(image);
-            const blob =  await response.blob();
-    
+            const fileRef = ref(storage, childPath);
+
             const uploadTask = uploadBytesResumable(fileRef, blob);
-    
-            let url = ''
-    
+
             uploadTask.on('state_changed', 
                 (snapshot) => {
                     console.log(`transferred: ${snapshot.bytesTransferred}`);
@@ -73,41 +56,36 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref)
-                        .then((downloadURL) => {
-                            console.log(`File available at ${downloadURL}`);
-                            url = downloadURL;
-                        })
+                            .then((downloadURL) => {
+                                savePostData(downloadURL)
+                            })
                 }
-            );
-            return url;
+            )
+
         }
     }
 
-    const savePostData = (downloadURLStill?: string | null, downloadURL?: string) => {
-        let object = {
-            downloadURL,
-            downloadURLStill,
-            caption,
-            likesCount: 0,
-            commentsCount: 0,
-            type: route.params.type,
-            creation: serverTimestamp()
-        }
-        if (downloadURLStill !== null) {
-            object.downloadURLStill = downloadURLStill
-        }
 
-        
+    const savePostData = (downloadURL: string) => {
         if (auth.currentUser?.uid) {
             const db = getFirestore(app);
             const fireDoc = doc(db, 'posts', auth.currentUser?.uid);
             const colRef = doc(collection(fireDoc, "userPosts"));
-            setDoc(colRef, object)
+            setDoc(colRef, {
+                downloadURL,
+                caption,
+                likesCount: 0,
+                commentsCount: 0,
+                type: route.params.type,
+                creation: serverTimestamp()
+            })
                 .then((result) => {
+                    console.log(result);
                     fetchUserPosts();
                     navigation.popToTop();
                 })
                 .catch((error) => {
+                    console.log(error)
                     setUploading(false);
                     setError(true);
                 });

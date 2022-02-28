@@ -64,7 +64,7 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
             let type = galleryPickedImage.mediaType === 'video' ? 0 : 1;
 
             const loadedAsset = await MediaLibrary.getAssetInfoAsync(galleryPickedImage);
-            let imageSource = null;
+            let imageSource = undefined;
             if (type === 0) {
                 imageSource = await generateThumbnail(galleryPickedImage.uri)
             }
@@ -84,7 +84,7 @@ const AddPost: FC<addPostProps> = ({ navigation }) => {
             const data = await cameraRef.current.takePictureAsync(options);
             const source = data.uri;
             if (source) {
-                navigation.navigate('Save', {source, imageSource: null, type})
+                navigation.navigate('Save', {source, imageSource: undefined, type})
             }
         }
     }
