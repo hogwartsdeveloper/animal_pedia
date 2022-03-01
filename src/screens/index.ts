@@ -1,8 +1,10 @@
 import LandingScreen from "./auth/Landing";
-import MainTab from "./MainTab";
+// import MainTab from "./MainTab";
 import LoginScreen from "./auth/Login";
 import SignUpScreen from "./auth/SignUp";
 import SaveScreen from "./main/add/Save";
-import AddPostScreen from "./main/add/AddPost";
+import PhotographicScreen from "./main/add/Photographic";
+import ProfileScreen from "./main/profile/Profile";
+import FeedScreen from "./main/Feed";
 
-export { LandingScreen, MainTab, LoginScreen, SignUpScreen, SaveScreen, AddPostScreen}
+export { LandingScreen,  LoginScreen, SignUpScreen, SaveScreen, PhotographicScreen, ProfileScreen, FeedScreen}

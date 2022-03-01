@@ -14,7 +14,7 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
-const AddPost: FC<addPostProps> = ({ navigation }) => {
+const Photographic: FC<addPostProps> = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [cameraType, setCameraType] = useState<CameraType>(Camera.Constants.Type.back);
     const [isPreview, setIsPreview] = useState(false);
@@ -312,4 +312,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddPost
+export default Photographic;

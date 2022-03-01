@@ -6,7 +6,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import { store } from "./src/redux";
-import { LandingScreen, LoginScreen, MainTab, SignUpScreen, SaveScreen } from "./src/screens";
+import { LandingScreen, LoginScreen, SignUpScreen, SaveScreen } from "./src/screens";
+import MainTab from "./src/screens/MainTab";
 import { RootStackParamList } from "./src/type";
 import { LogBox } from "react-native";
 
