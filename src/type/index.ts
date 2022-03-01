@@ -11,9 +11,7 @@ export type RootStackParamList = {
 }
 
 type SaveRoute = {
-    source: string | undefined;
     imageSource: string | undefined;
-    type: number;
 }
 
 type ProfileRoute = {

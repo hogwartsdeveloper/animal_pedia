@@ -1,10 +1,8 @@
 import { useIsFocused } from "@react-navigation/native";
 import { Camera } from "expo-camera";
 import { CameraType } from "expo-camera/build/Camera.types";
-import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
-import * as VideoThumbnails from "expo-video-thumbnails";
-import { FC, LegacyRef, ReactChild, ReactNode, useEffect, useRef, useState } from "react";
+import { FC, LegacyRef, useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { container, utils } from "../../../styles";
@@ -20,8 +18,7 @@ const Photographic: FC<addPostProps> = ({ navigation }) => {
     const [isPreview, setIsPreview] = useState(false);
     const [isCameraReady, setIsCameraReady] = useState(false);
     const [isFlash, setIsFlash] = useState(false);
-    const [isVideoRecording, setIsVideoRecording] = useState(false);
-    const [type, setType] = useState(0);
+    // const [type, setType] = useState(0);
     const [showGallery, setShowGallery] = useState(true);
     const [galleryItems, setGallertItems] = useState<MediaLibrary.PagedInfo<MediaLibrary.Asset>>();
     const [galleryScrollRef, setGalleryScrollRef] = useState<ScrollView | null>(null);
@@ -61,18 +58,10 @@ const Photographic: FC<addPostProps> = ({ navigation }) => {
 
     const handleGoToSaveOnGalleryPick = async () => {
         if(galleryPickedImage) {
-            let type = galleryPickedImage.mediaType === 'video' ? 0 : 1;
-
             const loadedAsset = await MediaLibrary.getAssetInfoAsync(galleryPickedImage);
-            let imageSource = undefined;
-            if (type === 0) {
-                imageSource = await generateThumbnail(galleryPickedImage.uri)
-            }
 
             navigation.navigate('Save', {
-                source: loadedAsset.localUri,
-                type,
-                imageSource
+                imageSource: loadedAsset.localUri
             })
         }
 
@@ -84,49 +73,10 @@ const Photographic: FC<addPostProps> = ({ navigation }) => {
             const data = await cameraRef.current.takePictureAsync(options);
             const source = data.uri;
             if (source) {
-                navigation.navigate('Save', {source, imageSource: undefined, type})
+                navigation.navigate('Save', {imageSource: source})
             }
         }
     }
-
-    const recordVideo = async () => {
-        if (cameraRef.current) {
-            try {
-
-                const options = { maxDuration: 60, quality: Camera.Constants.VideoQuality['480p']}
-
-                const videoRecordPromise = cameraRef.current.recordAsync(options);
-                if (videoRecordPromise) {
-                    setIsVideoRecording(true);
-                    const data = await videoRecordPromise;
-                    const source = data.uri;
-                    let imageSource = await generateThumbnail(source)
-                    navigation.navigate('Save', { source, imageSource, type})
-                }
-            } catch (error) {
-                console.warn(error);
-            }
-        }
-    };
-
-    const stopVideoRecording = async () => {
-        if (cameraRef.current) {
-            setIsVideoRecording(false);
-            cameraRef.current.stopRecording();
-        }
-    }
-
-    const generateThumbnail = async (source: string) => {
-        try {
-            const { uri } = await VideoThumbnails.getThumbnailAsync(
-                source,
-                {time: 500}
-            );
-            return uri;
-        } catch (e) {
-            console.warn(e);
-        }
-    };
 
     const renderCaptureControl = () => {
         return (
@@ -136,30 +86,20 @@ const Photographic: FC<addPostProps> = ({ navigation }) => {
                     <Feather style={utils.margin15} name="zap" size={25} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
-                    <Feather style={utils.margin15} name="rotate-cw" size={25} color="back" />
+                    <Feather style={utils.margin15} name="rotate-cw" size={25} color="black" />
                 </TouchableOpacity>
-                {type === 0
-                    ?
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        disabled={!isCameraReady}
-                        onLongPress={recordVideo}
-                        onPressOut={stopVideoRecording}
-                        style={styles.capture}
-                    />
-                    :
+
                     <TouchableOpacity 
                         activeOpacity={0.7}
                         disabled={!isCameraReady}
                         onPress={takePicture}
                         style={styles.capturePicture}
                     />
-                }
 
                 <TouchableOpacity
-                    disabled={!isCameraReady} onPress={() => type === 1 ? setType(0) : setType(1)}
+                    disabled={!isCameraReady}
                 >
-                    <Feather style={utils.margin15} name={type === 0 ? 'camera' : 'video'} size={25} color="black" />
+                    <Feather style={utils.margin15} name='camera' size={25} color="black" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setShowGallery(true)}>
                     <Feather style={utils.margin15} name={'image'} size={25} color="black" />
