@@ -3,6 +3,9 @@ const utils = StyleSheet.create({
     margin15: {
         margin: 15
     },
+    margin15Right: {
+        marginRight: 15
+    },
     marginBottom: {
         marginBottom: 20
     },
@@ -17,6 +20,14 @@ const utils = StyleSheet.create({
     },
     backgroundWhite: {
         backgroundColor: '#fff'
+    },
+    buttonOutlined: {
+        padding: 8,
+        color: 'white',
+        borderWidth: 1,
+        borderColor: 'lightgrey',
+        borderRadius: 8,
+        textAlign: 'center'
     },
     padding15: {
         paddingTop: 15,
@@ -79,11 +90,20 @@ const container = StyleSheet.create({
 });
 
 const text = StyleSheet.create({
+    center: {
+        textAlign: 'center'
+    },
+    profileDescription: {
+        fontWeight: '300'
+    },
     bold: {
         fontWeight: '700'
     },
     large: {
         fontSize: 20
+    },
+    green: {
+        color: 'green'
     }
 })
 
