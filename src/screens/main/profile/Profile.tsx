@@ -16,18 +16,21 @@ type IUser = {
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
     const [ userPosts, setUserPosts] = useState<any[]>([]);
-    const [ user, setUser] = useState<IUser>();
+    const [ user, setUser] = useState<IUser | null>(null);
     const [ loading, setLoading ] = useState(true);
     const [ followingUser, setFollowingUser ] = useState(false);
     const { currentUser, posts, following} = useTypedSelector(state => state.userState);
 
     useEffect(() => {
     
-        // if (route.params.uid === auth.currentUser?.uid) {
-        //     setUser(currentUser);
-        //     setUserPosts(posts);
-        //     setLoading(false)
-        // } else {
+        if (route.params.uid === auth.currentUser?.uid) {
+            setUser(currentUser);
+            setUserPosts(posts);
+            setLoading(false)
+            console.log('posts: ', posts);
+            console.log('user: ', currentUser);
+            
+        } else {
             const db = getFirestore(app);
             const userDoc = doc(db, 'users', route.params.uid);
 
@@ -56,7 +59,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                 })
                 setUserPosts(posts);
             });
-        // }
+        }
 
         if (following.indexOf(route.params.uid) > -1) {
             setFollowingUser(true);
@@ -77,16 +80,16 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                     />
 
 
-                    {/* <View style={[container.container, container.horizontal, utils.justifyCenter ,utils.padding10Sides]}>
+                    <View style={[container.container, container.horizontal, utils.justifyCenter ,utils.padding10Sides]}>
                         <View style={[utils.justifyCenter, container.containerImage]}>
                             <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
                             <Text style={[text.center]}>Posts</Text>
                         </View>
-                    </View> */}
+                    </View>
                 </View>
 
                 <View>
-                    {/* <Text style={[text.bold]}>{user.name}</Text> */}
+                    <Text style={[text.bold]}>{user?.name}</Text>
 
                     {route.params.uid !== auth.currentUser?.uid
                         ? (

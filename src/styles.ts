@@ -55,6 +55,9 @@ const utils = StyleSheet.create({
         borderRightWidth: 2,
         borderTopWidth: 2,
         borderColor: 'white'
+    },
+    centerHorizonta: {
+        alignItems: 'center'
     }
 });
 
@@ -86,6 +89,10 @@ const container = StyleSheet.create({
     horizontal: {
         flexDirection: 'row',
         display: 'flex'
+    },
+    form: {
+        flex: 1,
+        margin: 25
     }
 });
 
