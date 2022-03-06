@@ -72,20 +72,15 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                 </View>
                 
             </View>
-            <View>
+            <View style={utils.borderTopGray}>
                 <FlatList 
                     numColumns={3}
                     horizontal={false}
                     data={posts}
-                    renderItem={(item)=>(
-                        <View>
-                            <Text>
-                                {item.item.caption}
-                            </Text>
-                            <Image source={{uri:item.item.downloadURL}} style={{width:200, height:200}}>
-
-                            </Image>
-                        </View>
+                    renderItem={({ item })=>(
+                        <TouchableOpacity style={container.containerImage}>
+                            <Image source={{uri: item.downloadURL}}/>
+                        </TouchableOpacity>
                     )}
                 />
                 

@@ -3,7 +3,7 @@ import { Image } from "react-native";
 import * as FileSystem from "expo-file-system";
 
 interface ICachedImage {
-    sourse: string | any,
+    sourse: string,
     cacheKey: string
 }
 
@@ -11,7 +11,7 @@ const CachedImage: FC<ICachedImage> = ({sourse, cacheKey}) => {
 
     const fileSystemURI = `${FileSystem.cacheDirectory}${cacheKey}`
 
-    const [imgURL, setImgURI] = useState<string | null>(fileSystemURI);
+    const [imgURL, setImgURI] = useState<string>(fileSystemURI);
     const componentIsMounted = useRef(true);
 
     useEffect(() => {
@@ -27,7 +27,6 @@ const CachedImage: FC<ICachedImage> = ({sourse, cacheKey}) => {
             const metadata = await FileSystem.getInfoAsync(fileURI);
             if(!metadata.exists) {
                 if (componentIsMounted.current) {
-                    setImgURI(null);
                     await FileSystem.downloadAsync(sourse, fileURI)
                     setImgURI(fileURI)
                 }
