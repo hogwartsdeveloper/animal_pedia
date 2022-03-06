@@ -1,12 +1,16 @@
 import { collection, doc, getFirestore, onSnapshot, orderBy, query } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, ScrollView, Text, TouchableOpacity, View, Button, StyleSheet} from "react-native";
 import { app, auth } from "../../../../firebase";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { container, text, utils } from "../../../styles";
 import { profileProps } from "../../../type";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
+import { IPost } from "../../../type/user";
+import { Item } from "react-native-paper/lib/typescript/components/List/List";
+import { useActions } from "../../../hooks/useActions";
+
 
 type IUser = {
     email: string;
@@ -15,62 +19,33 @@ type IUser = {
 }
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
-    const [ userPosts, setUserPosts] = useState<any[]>([]);
+   
     const [ user, setUser] = useState<IUser | null>(null);
-    const [ loading, setLoading ] = useState(true);
-    const [ followingUser, setFollowingUser ] = useState(false);
-    const { currentUser, posts, following} = useTypedSelector(state => state.userState);
+
+    const [post, setPost] = useState<IPost[]>([]);
+    
+    const { currentUser, posts } = useTypedSelector(state => state.userState);
+
+    const { fetchUserPosts} = useActions();
+    const [image, setImage] = useState<string>('');
 
     useEffect(() => {
-    
-        if (route.params.uid === auth.currentUser?.uid) {
-            setUser(currentUser);
-            setUserPosts(posts);
-            setLoading(false)
-            console.log('posts: ', posts);
-            console.log('user: ', currentUser);
-            
-        } else {
-            const db = getFirestore(app);
-            const userDoc = doc(db, 'users', route.params.uid);
+        
+        posts.map((i) => {
+            console.log(i.downloadURL);
+            setImage(i.downloadURL)
+        })
+        
 
-            const postsDoc = doc(db, 'posts', route.params.uid);
-            const postsCol = collection(postsDoc, "userPosts");
-            const q = query(postsCol, orderBy("creation", "desc"))
-
-            onSnapshot(userDoc, (snapshot) => {
-                if (snapshot.exists()) {
-                    navigation.setOptions({
-                        title: snapshot.data().username,
-                    })
-
-                    setUser({uid: route.params.uid, email: snapshot.data().email, name: snapshot.data().name});
-                    console.log(user);
-                }
-                setLoading(false);
-                
-            });
-
-            onSnapshot(q, (snapshot) => {
-                let posts = snapshot.docs.map(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    return { id, ...data }
-                })
-                setUserPosts(posts);
-            });
-        }
-
-        if (following.indexOf(route.params.uid) > -1) {
-            setFollowingUser(true);
-        } else {
-            setFollowingUser(false);
-        }
     }, [])
 
+    const logout = () => {
+        auth.signOut()
+    }
 
     return (
-        <ScrollView style={[container.container, utils.backgroundWhite]}>
+        
+        <View style={[container.container, utils.backgroundWhite]}>
             <View style={[container.profileInfo]}>
                 <View style={[container.row]}>
 
@@ -78,85 +53,77 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         style={[utils.profileImageBig, utils.marginBottomSmall]}
                         name="user-circle" size={80} color="black"
                     />
+                </View>
 
-
-                    <View style={[container.container, container.horizontal, utils.justifyCenter ,utils.padding10Sides]}>
-                        <View style={[utils.justifyCenter, container.containerImage]}>
-                            <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
-                            <Text style={[text.center]}>Posts</Text>
-                        </View>
+                <View style={styles.viewStyle}>
+                    <Text style={[text.bold, styles.name]}>{user?.name}</Text>
+                    <View>
+                        {route.params.uid === auth.currentUser?.uid
+                            ?   <TouchableOpacity onPress={logout} style={styles.btn}>
+                                    <Text>Выход</Text>
+                                
+                                    <AntDesign name="logout" size={24} color="black" style={styles.iconLogOut}/>
+                                   
+                            </TouchableOpacity>
+                            :   null
+                        }
                     </View>
+                    
                 </View>
-
-                <View>
-                    <Text style={[text.bold]}>{user?.name}</Text>
-
-                    {route.params.uid !== auth.currentUser?.uid
-                        ? (
-                            <View style={[container.horizontal]}>
-                                {following
-                                    ? (
-                                        <TouchableOpacity
-                                            style={[utils.buttonOutlined, container.container, utils.margin15Right]}
-                                        >
-                                            <Text style={[text.center, text.bold, text.green]}>Following</Text>
-                                        </TouchableOpacity>
-                                    )
-
-                                    : (
-                                        <TouchableOpacity
-                                            style={[utils.buttonOutlined, container.container, utils.margin15Right]}
-                                        >
-                                            <Text style={[text.center, text.bold, {color: '#2196F3'}]}>Follow</Text>
-                                        </TouchableOpacity>
-                                    )
-                                }
-
-                                <TouchableOpacity
-                                    style={[utils.buttonOutlined, container.container ]}
-                                >
-                                    <Text style={[text.center, text.bold ]}>Message</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )
-                        :
-                        <TouchableOpacity
-                            style={[utils.buttonOutlined]}
-                        >
-                            <Text style={[text.center, text.bold ]}>Edit Profile</Text>
-                        </TouchableOpacity>
-                    }
-                </View>
+                
             </View>
-
-            <View style={[utils.borderTopGray]}>
+            <View>
                 <FlatList 
                     numColumns={3}
                     horizontal={false}
-                    data={userPosts}
-                    style={{}}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={[container.containerImage, utils.borderWhite]}
-                        >
-                            {item.type === 0 ?
-                                <CachedImage
-                                    cacheKey={item.id}
-                                    sourse={{uri: item.downloadURLStill}}
-                                />
+                    data={posts}
+                    renderItem={(item)=>(
+                        <View>
+                            <Text>
+                                {item.item.caption}
+                            </Text>
+                            <Image source={{uri:item.item.downloadURL}} style={{width:200, height:200}}>
 
-                                :
-                                <CachedImage
-                                    cacheKey={item.id}
-                                    sourse={{uri: item.downloadURLStill}}
-                                />
-                            }
-                        </TouchableOpacity>
+                            </Image>
+                        </View>
                     )}
                 />
+                
             </View>
-        </ScrollView>
+            
+
+            
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    btn:{
+        padding: 12,
+        backgroundColor: '#ffdb3e',
+        borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        
+    },
+
+    viewStyle:{
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+    },
+
+    name: {
+        fontSize: 20,
+        textTransform: "capitalize",
+    },
+
+    iconLogOut: {
+        marginLeft: 10,
+        color: "white",
+    },
+
+})
 
 export default Profile;

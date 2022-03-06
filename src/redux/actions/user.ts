@@ -41,24 +41,3 @@ export function fetchUserPosts() {
         
     })
 };
-
-export const sendNotification = (to: any, title: string, body: string, data: {}) => {
-    if (to === null) {
-        return;
-    }
-
-    let response = fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            to,
-            sound: 'default',
-            title,
-            body,
-            data
-        })
-    })
-}

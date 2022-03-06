@@ -1,6 +1,6 @@
 export interface UserState {
     currentUser: null | any;
-    posts: any[];
+    posts: IPost[];
     chats: any[];
     following: any[]
 }
@@ -38,3 +38,14 @@ interface ClearDataAction {
 }
 
 export type UserAction = UserStateChangeAction | UserPostsStateChangeAction | UserChatsStateChangeAction | ClearDataAction | UserFollowingStateChangeAction;
+
+export interface IPost {
+    caption: string;
+    creation: {
+        nanoseconds: number;
+        seconds: number;
+    }
+    downloadURL: string;
+    id: string;
+
+}
