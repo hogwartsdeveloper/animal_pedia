@@ -37,13 +37,8 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     }, [])
 
-    const logout = () => {
-        auth.signOut()
-    }
-
-    return (
-        
-        <ScrollView style={[container.container, utils.backgroundWhite]}>
+    const showEditHeader = () => {
+        return (
             <View style={[container.profileInfo]}>
                 <View style={[container.row]}>
 
@@ -70,25 +65,33 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                 </View>
                 
             </View>
-            <View style={utils.borderTopGray}>
-                <FlatList 
-                    numColumns={3}
-                    horizontal={false}
-                    data={posts}
-                    renderItem={({ item })=>(
-                        <TouchableOpacity style={[container.containerImage, utils.borderWhite]}>
-                            <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
-                        </TouchableOpacity>
-                        
-                    
-                    )}
-                />
-                
-            </View>
-            
+        )
+    }
 
-            
-        </ScrollView>
+    return (
+        <FlatList
+            ListHeaderComponent={showEditHeader}
+            style={[container.container, utils.backgroundWhite]}
+            data={[1]}
+            renderItem={({item}) => (
+                <View style={utils.borderTopGray} key={item}>
+                    <FlatList 
+                        numColumns={3}
+                        horizontal={false}
+                        data={posts}
+                        renderItem={({ item })=>(
+                            <TouchableOpacity style={[container.containerImage, utils.borderWhite]}>
+                                <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
+                            </TouchableOpacity>
+                            
+                        
+                        )}
+                    />
+                    
+                </View>
+            )}
+            keyExtractor={(index) => index.toString()}
+        />
     );
 };
 
