@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useLayoutEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import * as Updates from 'expo-updates';
-import { Image, Text, TouchableOpacity, View, TextInput, Button } from "react-native";
+import { Image, Text, TouchableOpacity, View, TextInput, Button, Platform } from "react-native";
 import { container, form, navbar, text, utils } from "../../../styles";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { FontAwesome5, Feather } from "@expo/vector-icons";
@@ -19,14 +19,23 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
 
     const {currentUser} = useTypedSelector(state => state.userState);
 
-    useEffect(() => {
-        setName(currentUser.name);
-        setImage(currentUser.image);
 
-        if (currentUser.description !== undefined) {
-            setDescription(currentUser.description);
-        }
-        console.log(currentUser);
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Permision denied!');
+                }
+            }
+            setName(currentUser.name);
+            setImage(currentUser.image);
+    
+            if (currentUser.description !== undefined) {
+                setDescription(currentUser.description);
+            }
+            console.log(currentUser);
+        })
     }, []);
 
     useLayoutEffect(() => {
@@ -43,19 +52,19 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
     }
 
     const imagePicker = async () => {
-        if (true) {
-            let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [1, 1],
-                quality: 1
-            });
+        let result = await ImagePicker.launchImageLibraryAsync({
+            presentationStyle: 0,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1
+        });
 
-            if (!result.cancelled) {
-                setImage(result.uri);
-                setImageChanged(true);
-            }
+        if (!result.cancelled) {
+            setImage(result.uri);
+            setImageChanged(true);
         }
+        
     };
 
     const save = async () => {
