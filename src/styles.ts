@@ -111,7 +111,21 @@ const text = StyleSheet.create({
     },
     green: {
         color: 'green'
+    },
+    changePhoto: {
+        marginTop: 5,
+        color: 'deepskyblue'
     }
+});
+
+const form = StyleSheet.create({
+    textInput: {
+        marginBottom: 10,
+        borderColor: 'gray',
+        backgroundColor: 'whitesmoke',
+        padding: 10,
+        borderRadius: 8,
+    },
 })
 
-export { utils, container, text, navbar }
+export { utils, container, text, navbar, form }

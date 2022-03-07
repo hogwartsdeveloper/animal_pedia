@@ -20,12 +20,9 @@ type IUser = {
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
    
-    const [ user, setUser] = useState<IUser | null>(null);
-
+    const [user, setUser] = useState<IUser | null>(null);
     const [post, setPost] = useState<IPost[]>([]);
-    
     const { currentUser, posts } = useTypedSelector(state => state.userState);
-
     const { fetchUserPosts} = useActions();
     const [image, setImage] = useState<string>('');
 
@@ -60,12 +57,12 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                     <Text style={[text.bold, styles.name]}>{user?.name}</Text>
                     <View style={[container.horizontal]}>
                         {route.params.uid === auth.currentUser?.uid
-                            ?   <TouchableOpacity onPress={logout} style={styles.btn}>
-                                    <Text>Выход</Text>
-                                
-                                    <AntDesign name="logout" size={24} color="black" style={styles.iconLogOut}/>
-                                   
-                            </TouchableOpacity>
+                            ?   <TouchableOpacity 
+                                    style={utils.buttonOutlined}
+                                    onPress={() => navigation.navigate('Edit')}
+                                >
+                                    <Text style={[text.bold, text.center]}>Редактировать</Text>
+                                </TouchableOpacity>
                             :   null
                         }
                     </View>

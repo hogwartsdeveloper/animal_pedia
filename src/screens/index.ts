@@ -5,6 +5,7 @@ import SignUpScreen from "./auth/SignUp";
 import SaveScreen from "./main/add/Save";
 import PhotographicScreen from "./main/add/Photographic";
 import ProfileScreen from "./main/profile/Profile";
+import EditProfileSreen from "./main/profile/Edit";
 import FeedScreen from "./main/Feed";
 
-export { LandingScreen,  LoginScreen, SignUpScreen, SaveScreen, PhotographicScreen, ProfileScreen, FeedScreen}
+export { LandingScreen,  LoginScreen, SignUpScreen, SaveScreen, PhotographicScreen, ProfileScreen, FeedScreen, EditProfileSreen}
