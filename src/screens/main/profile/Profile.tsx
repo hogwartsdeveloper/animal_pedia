@@ -30,6 +30,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const [image, setImage] = useState<string>('');
 
     useEffect(() => {
+        setUser(currentUser);
         
         posts.map((i) => {
             console.log(i.downloadURL);
@@ -45,7 +46,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     return (
         
-        <View style={[container.container, utils.backgroundWhite]}>
+        <ScrollView style={[container.container, utils.backgroundWhite]}>
             <View style={[container.profileInfo]}>
                 <View style={[container.row]}>
 
@@ -55,9 +56,9 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                     />
                 </View>
 
-                <View style={styles.viewStyle}>
+                <View>
                     <Text style={[text.bold, styles.name]}>{user?.name}</Text>
-                    <View>
+                    <View style={[container.horizontal]}>
                         {route.params.uid === auth.currentUser?.uid
                             ?   <TouchableOpacity onPress={logout} style={styles.btn}>
                                     <Text>Выход</Text>
@@ -78,9 +79,11 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                     horizontal={false}
                     data={posts}
                     renderItem={({ item })=>(
-                        <TouchableOpacity style={container.containerImage}>
-                            <Image source={{uri: item.downloadURL}}/>
+                        <TouchableOpacity style={[container.containerImage, utils.borderWhite]}>
+                            <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
                         </TouchableOpacity>
+                        
+                    
                     )}
                 />
                 
@@ -88,7 +91,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
             
 
             
-        </View>
+        </ScrollView>
     );
 };
 
