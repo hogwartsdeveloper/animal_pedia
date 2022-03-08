@@ -6,16 +6,8 @@ import { container, text, utils } from "../../../styles";
 import { profileProps } from "../../../type";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
-import { IPost } from "../../../type/user";
-import { useActions } from "../../../hooks/useActions";
+import { IPost, IUser } from "../../../type/user";
 
-
-type IUser = {
-    email: string;
-    name: string;
-    uid: string;
-    image: string;
-}
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
    

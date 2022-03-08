@@ -10,32 +10,32 @@ import { editProfileProps } from "../../../type";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 
+
 const Edit: FC<editProfileProps> = ({ navigation }) => {
-    const [name, setName] = useState('');
+    const [name, setName] = useState<string | undefined>();
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState<string>('');
+    const [image, setImage] = useState<string | undefined>('default');
     const [imageChanged, setImageChanged] = useState<boolean>(false);
-    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
 
     const {currentUser} = useTypedSelector(state => state.userState);
 
 
     useEffect(() => {
-        (async () => {
+        setName(currentUser?.name);
+        setImage(currentUser?.image);
+
+        if (currentUser?.description !== undefined) {
+            setDescription(currentUser.description);
+        }
+        const imagePicker =  async () => {
             if (Platform.OS !== 'web') {
                 const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
                 if (status !== 'granted') {
                     alert('Permision denied!');
                 }
             }
-            setName(currentUser.name);
-            setImage(currentUser.image);
-    
-            if (currentUser.description !== undefined) {
-                setDescription(currentUser.description);
-            }
-            console.log(currentUser);
-        })
+        };
+        imagePicker();
     }, []);
 
     useLayoutEffect(() => {
@@ -44,7 +44,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                 <Feather style={navbar.image} name="check" size={24} color="green" onPress={() => {console.log({ name, description}); save()}} />
             )
         })
-    });
+    }, [navigation ,name, description, image, imageChanged]);
 
     const onLogout = async () => {
         auth.signOut();
@@ -68,7 +68,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
     };
 
     const save = async () => {
-        if (imageChanged) {
+        if (imageChanged && image) {
             const uri = image;
             const childPath = `profile/${auth.currentUser?.uid}`;
 
@@ -138,7 +138,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                         <Image 
                             style={[utils.profileImageBig, utils.marginBottomSmall]}
                             source={{
-                                uri: image
+                                uri: image ? image : ''
                             }}
                         />
                     )
@@ -152,7 +152,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                 onChangeText={(name) => setName(name)}
             />
             <TextInput 
-                value="description"
+                value={description}
                 style={[form.textInput]}
                 placeholder="Description"
                 onChangeText={(description) => setDescription(description)}

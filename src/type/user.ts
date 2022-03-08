@@ -1,5 +1,5 @@
 export interface UserState {
-    currentUser: null | any;
+    currentUser: IUser | null;
     posts: IPost[];
     chats: any[];
     following: any[]
@@ -47,5 +47,12 @@ export interface IPost {
     }
     downloadURL: string;
     id: string;
+}
 
+export type IUser = {
+    email: string;
+    name: string;
+    uid: string;
+    image: string;
+    description: string;
 }
