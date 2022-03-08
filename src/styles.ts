@@ -115,6 +115,11 @@ const text = StyleSheet.create({
     changePhoto: {
         marginTop: 5,
         color: 'deepskyblue'
+    },
+    notAvailable: {
+        textAlign: 'center',
+        fontWeight: '700',
+        fontSize: 20
     }
 });
 
