@@ -39,6 +39,12 @@ const utils = StyleSheet.create({
         height: 80,
         borderRadius: 80 / 2,
     },
+    profileImageSmall: {
+        marginRight: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2
+    },
     padding10Sides: {
         paddingRight: 10,
         paddingLeft: 10
@@ -105,6 +111,10 @@ const text = StyleSheet.create({
     },
     bold: {
         fontWeight: '700'
+    },
+    medium: {
+        fontSize: 15,
+        marginBottom: 10
     },
     large: {
         fontSize: 20

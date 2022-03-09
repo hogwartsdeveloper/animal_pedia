@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import { FlatList, RefreshControl, Text, Touchable, TouchableOpacity, View } from "react-native";
-import { container, utils } from "../../styles";
-import { IPost } from "../../type/user";
+import { container, utils } from "../../../styles";
+import { IPost } from "../../../type/user";
 import BottomSheet from 'react-native-bottomsheet-reanimated'
 
 interface IFeedProps {
