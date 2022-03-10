@@ -12,6 +12,9 @@ const utils = StyleSheet.create({
     marginBottomSmall: {
         marginBottom: 10
     },
+    margin5Bottom: {
+        marginBottom: 5
+    },
     justifyCenter: {
         justifyContent: 'center'
     },
@@ -112,6 +115,9 @@ const text = StyleSheet.create({
     bold: {
         fontWeight: '700'
     },
+    small: {
+        fontSize: 10
+    },
     medium: {
         fontSize: 15,
         marginBottom: 10
@@ -121,6 +127,9 @@ const text = StyleSheet.create({
     },
     green: {
         color: 'green'
+    },
+    grey: {
+        color: 'grey'
     },
     changePhoto: {
         marginTop: 5,

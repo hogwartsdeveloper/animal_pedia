@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import BottomSheet from 'react-native-bottomsheet-reanimated';
 import { container, text, utils } from "../../../styles";
 import { IPost, IUser } from "../../../type/user";
 import { FontAwesome5, Feather } from "@expo/vector-icons";
+import CachedImage from "../random/CachedImage";
+import ParsedText from "react-native-parsed-text";
+import { timeDifference } from "../../../utils";
 
 function Post() {
     const [user, setUser] = useState<IUser | null>(null);
+    const [item, setItem] = useState<IPost>({
+        id: '',
+        caption: '',
+        creation: {
+            nanoseconds: 0,
+            seconds: 0
+        },
+        downloadURL: ''
+    });
+
+    const [sheetRef, setSheetRef] = useState(useRef(null));
+
     return (
         <View style={[container.container, utils.backgroundWhite]}>
             <View>
@@ -41,9 +57,60 @@ function Post() {
                         onPress={() => {
 
                         }}
+                    >
+                        <Feather name="more-vertical" size={20} color="black" />
+                    </TouchableOpacity>
+                    
+                    <CachedImage 
+                        cacheKey={item.id}
+                        styles={container.image}
+                        sourse={item.downloadURL}
                     />
-                    <Feather name="more-vertical" size={20} color="black" />
+                    
+                    <View style={[container.container, utils.padding10Sides]}>
+                        <Text style={[utils.margin15Right, utils.margin5Bottom]}>
+                            <Text style={[text.bold]}>
+                                {user?.name}
+                            </Text>
+                            <ParsedText 
+                                parse={
+                                    [
+                                        { pattern: /@(\w+)/, style: {color: 'green', fontWeight: 'bold' }}
+                                    ]
+                                }
+                            >{item.caption}</ParsedText>
+                        </Text>
+                        <Text
+                            style={[text.grey, utils.margin5Bottom]}
+                        >
+                            View all Comments
+                        </Text>
+                        <Text
+                            style={[ text.grey, text.small, utils.margin5Bottom]}
+                        >
+                            {timeDifference(new Date(), item.creation)}
+                        </Text>
+                    </View>
                 </View>
+
+                <BottomSheet 
+                    bottomSheerColor="#fff"
+                    ref={setSheetRef}
+                    initialPosition={0}
+                    snapPoints={[300, 0]}
+                    isBackDrop={true}
+                    isBackDropDismissByPress={true}
+                    isRoundBorderWithTipHeader={true}
+                    backDropColor="back"
+                    isModal
+                    containerStyle={{ backgroundColor: 'white' }}
+                    tipStyle={{ backgroundColor: 'white' }}
+                    headerStyle={{ backgroundColor: 'white', flex: 1}}
+                    bodyStyle={{ backgroundColor: 'white', flex: 1, borderRadius: 20}}
+                    body={
+                        <View></View>
+                    }
+                />
             </View>
         </View>
     )
