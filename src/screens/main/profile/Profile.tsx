@@ -11,7 +11,13 @@ import { IPost, IUser } from "../../../type/user";
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
    
-    const [user, setUser] = useState<IUser | null>(null);
+    const [user, setUser] = useState<IUser>({
+        uid: '',
+        name: '',
+        description: '',
+        email: '',
+        image: ''
+    });
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
     const { currentUser, posts } = useTypedSelector(state => state.userState);
@@ -99,7 +105,10 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         horizontal={false}
                         data={userPosts}
                         renderItem={({ item })=>(
-                            <TouchableOpacity style={[container.containerImage, utils.borderWhite]}>
+                            <TouchableOpacity
+                                style={[container.containerImage, utils.borderWhite]}
+                                onPress={() => navigation.navigate('Post', {item, user})}
+                            >
                                 <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
                             </TouchableOpacity>
                             

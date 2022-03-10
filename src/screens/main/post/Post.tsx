@@ -7,6 +7,9 @@ import { FontAwesome5, Feather } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
 import ParsedText from "react-native-parsed-text";
 import { timeDifference } from "../../../utils";
+import {Divider, Snackbar} from "react-native-paper";
+import firebase from "firebase/compat";
+import auth = firebase.auth;
 
 function Post() {
     const [user, setUser] = useState<IUser | null>(null);
@@ -21,6 +24,8 @@ function Post() {
     });
 
     const [sheetRef, setSheetRef] = useState(useRef(null));
+    const [modalShow, setModalShow] = useState({ visible: false, item: null});
+    const [isValid, setIsValid] = useState(true);
 
     return (
         <View style={[container.container, utils.backgroundWhite]}>
@@ -108,10 +113,41 @@ function Post() {
                     headerStyle={{ backgroundColor: 'white', flex: 1}}
                     bodyStyle={{ backgroundColor: 'white', flex: 1, borderRadius: 20}}
                     body={
-                        <View></View>
+                        <View>
+                            {modalShow.item != null
+                                ?
+                                <View>
+                                    <TouchableOpacity style={{ padding: 20}}>
+                                        <Text>Profile</Text>
+                                    </TouchableOpacity>
+                                    <Divider />
+                                    {user?.uid === ''
+                                        ?
+                                        <TouchableOpacity style={{padding: 20}}>
+                                            <Text>Delete</Text>
+                                        </TouchableOpacity>
+                                        :
+                                        null
+                                    }
+                                    <Divider />
+                                    <TouchableOpacity style={{ padding: 20}}>
+                                        <Text>Cancel</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                null
+                            }
+                        </View>
                     }
                 />
+                <Snackbar
+                    visible={isValid}
+                    duration={2000}
+                    onDismiss={() => {setIsValid(false)}}
+                >message</Snackbar>
             </View>
         </View>
     )
-}
+};
+
+export default Post;

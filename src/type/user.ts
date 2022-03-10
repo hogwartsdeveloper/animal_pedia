@@ -1,5 +1,5 @@
 export interface UserState {
-    currentUser: IUser | null;
+    currentUser: IUser;
     posts: IPost[];
     chats: any[];
     following: any[]
