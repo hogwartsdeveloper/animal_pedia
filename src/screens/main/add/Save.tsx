@@ -8,6 +8,7 @@ import { app, auth } from "../../../../firebase";
 import { saveProps } from "../../../type";
 import { Feather } from "@expo/vector-icons";
 import { useActions } from "../../../hooks/useActions";
+import Loader from "../../../components/Loader";
 
 const Save: FC<saveProps> = ({ navigation, route }) => {
     const [caption, setCaption] = useState<string>("");
@@ -91,10 +92,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
             {uploading
                 ?
                 (
-                    <View style={[container.container, utils.justifyCenter, utils.alignItemsCenter]}>
-                        <ActivityIndicator style={utils.marginBottom} size="large" />
-                        <Text style={[text.bold, text.large]}>Upload in progress...</Text>
-                    </View>
+                    <Loader />
                 )
                 :
                 (

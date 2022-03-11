@@ -11,16 +11,17 @@ const Loader: FC = () => {
 
 
     const rotate = () => {
-        Animated.timing(
-            spinValue, {
-                toValue: 1,
-                duration: 3000,
-                easing: Easing.inOut(Easing.ease),
-                useNativeDriver: true
-            }
-        ).start(() => {
-            spinValue.setValue(0);
-        })
+        Animated.loop(
+            Animated.timing(
+                spinValue, {
+                    toValue: 1,
+                    duration: 400000,
+                    easing: Easing.linear,
+                    useNativeDriver: true
+                }
+            ),
+            {iterations: 100}
+        ).start()
     }
 
     const rotateHair = spinValue.interpolate({
@@ -34,9 +35,14 @@ const Loader: FC = () => {
     });
 
     const rotateShadow = spinValue.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: ['0deg', '90deg', '0deg']
-    })
+        inputRange: [0, 1],
+        outputRange: ['90deg', '0deg']
+    });
+
+    const rotateSmallBeak = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['-90deg', '0deg']
+    });
 
     return (
         <View style={styles.wrapper}>
@@ -54,10 +60,10 @@ const Loader: FC = () => {
                     <Animated.View style={[styles.bigBeakContainer, {transform: [{rotate: rotateShadow}]}]}>
                         <View style={styles.bigBeak}></View>
                     </Animated.View>
-                    <View style={styles.smallContainer}>
+                    <Animated.View style={[styles.smallContainer, {transform: [{rotate: rotateSmallBeak}]}]}>
                         <View style={styles.smallBeak}></View>
-                    </View>
-                    <View style={styles.eye}></View>
+                    </Animated.View>
+                    <Animated.View style={[styles.eye]}></Animated.View>
                 </View>
             </View>
         </View>
