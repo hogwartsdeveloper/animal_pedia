@@ -116,7 +116,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                     
                 </View>
             )}
-            keyExtractor={(index) => index.toString()}
+            keyExtractor={(item) => item.toString()}
         />
     );
 };
