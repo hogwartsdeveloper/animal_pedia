@@ -1,24 +1,59 @@
-import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { FC, useEffect, useRef } from "react";
+import { StyleSheet, View, Animated, Easing} from "react-native";
 
 
 const Loader: FC = () => {
+    const spinValue = useRef(new Animated.Value(-360)).current;
+
+    useEffect(() => {
+        rotate()
+    }, [])
+
+
+    const rotate = () => {
+        Animated.timing(
+            spinValue, {
+                toValue: 1,
+                duration: 3000,
+                easing: Easing.inOut(Easing.ease),
+                useNativeDriver: true
+            }
+        ).start(() => {
+            spinValue.setValue(0);
+        })
+    }
+
+    const rotateHair = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['-360deg', '0deg']
+    });
+
+    const rotateWhite = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '-360deg']
+    });
+
+    const rotateShadow = spinValue.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: ['0deg', '90deg', '0deg']
+    })
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.bird}>
-                <View style={styles.hairContainer}>
+                <Animated.View style={[styles.hairContainer, {transform: [{rotate: rotateHair}]}]}>
                     <View style={styles.hair}></View>
-                </View>
+                </Animated.View>
                 <View style={styles.face}>
-                    <View style={styles.whiteContainer}>
+                    <Animated.View style={[styles.whiteContainer, {transform: [{rotate: rotateWhite}]}]}>
                         <View style={styles.white}></View>
-                    </View>
-                    <View style={styles.shadowContainer}>
+                    </Animated.View>
+                    <Animated.View style={[styles.shadowContainer, {transform: [{rotate: rotateShadow}]}]}>
                         <View style={styles.shadow}></View>
-                    </View>
-                    <View style={styles.bigBeakContainer}>
+                    </Animated.View>
+                    <Animated.View style={[styles.bigBeakContainer, {transform: [{rotate: rotateShadow}]}]}>
                         <View style={styles.bigBeak}></View>
-                    </View>
+                    </Animated.View>
                     <View style={styles.smallContainer}>
                         <View style={styles.smallBeak}></View>
                     </View>
