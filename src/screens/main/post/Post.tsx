@@ -9,7 +9,6 @@ import ParsedText from "react-native-parsed-text";
 import { timeDifference } from "../../../utils";
 import {Divider, Snackbar} from "react-native-paper";
 import firebase from "firebase/compat";
-import auth = firebase.auth;
 
 function Post() {
     const [user, setUser] = useState<IUser | null>(null);
