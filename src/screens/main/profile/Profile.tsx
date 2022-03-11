@@ -7,6 +7,7 @@ import { profileProps } from "../../../type";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
 import { IPost, IUser } from "../../../type/user";
+import Loader from "../../../components/Loader";
 
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
@@ -31,10 +32,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     if (loading) {
         return (
-            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto' }}>
-                <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#00ff00" />
-                <Text style={[ text.notAvailable ]}>Loading</Text>
-            </View>
+            <Loader />
         )
     }
 

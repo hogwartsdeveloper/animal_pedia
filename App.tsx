@@ -10,6 +10,7 @@ import { LandingScreen, LoginScreen, SignUpScreen, SaveScreen, ProfileScreen, Ed
 import MainTab from "./src/screens/MainTab";
 import { RootStackParamList } from "./src/type";
 import { LogBox } from "react-native";
+import Loader from "./src/components/Loader";
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core', 'Setting a timer for a long period of time'])
 
@@ -33,9 +34,7 @@ const App: FC = () => {
 
     if(!loaded) {
         return (
-            <View style={styles.loadingContainer}>
-                <Text>Loading</Text>
-            </View>
+            <Loader />
         )
     }
 

@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, Text, Touchable, TouchableOpacity, View } fro
 import { container, utils } from "../../../styles";
 import { IPost } from "../../../type/user";
 import BottomSheet from 'react-native-bottomsheet-reanimated'
+import Loader from "../../../components/Loader";
 
 interface IFeedProps {
     feed: IPost;
@@ -26,7 +27,7 @@ const Feed: FC<IFeedProps> = () => {
     return (
     
     <View>
-        <Text>feed</Text>
+        <Loader />
     </View>
     );
 };
