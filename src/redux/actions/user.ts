@@ -3,6 +3,24 @@ import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
 
+
+export function fetchUser() {
+    return (async (dispatch: Dispatch<UserAction>) => {
+        const db = getFirestore(app);
+        if (auth.currentUser?.uid) {
+            const docRef = doc(db, 'users', auth.currentUser.uid);
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    dispatch({ type: UserActionTypes.USER_STATE_CHANGE, payload: snapshot.data()})
+                } else {
+                    console.log('User is not exists');
+                }
+            })
+        }
+    })
+}
+
+
 export function fetchUserPosts() {
     return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);
@@ -23,24 +41,3 @@ export function fetchUserPosts() {
         
     })
 };
-
-export const sendNotification = (to: any, title: string, body: string, data: {}) => {
-    if (to === null) {
-        return;
-    }
-
-    let response = fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            to,
-            sound: 'default',
-            title,
-            body,
-            data
-        })
-    })
-}

@@ -1,67 +1,49 @@
-import { collection, doc, getFirestore, onSnapshot, orderBy, query } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
-import { app, auth } from "../../../../firebase";
+import { FlatList, Text, TouchableOpacity, View, StyleSheet, Image, ActivityIndicator} from "react-native";
+import { auth } from "../../../../firebase";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { container, utils } from "../../../styles";
+import { container, text, utils } from "../../../styles";
 import { profileProps } from "../../../type";
 import { FontAwesome5 } from "@expo/vector-icons";
+import CachedImage from "../random/CachedImage";
+import { IPost, IUser } from "../../../type/user";
+
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
-    const [ userPosts, setUserPosts] = useState<any[]>([]);
-    const [ user, setUser] = useState<{} | null>(null);
-    const [ loading, setLoading ] = useState(true);
-    const [ followingUser, setFollowingUser ] = useState(false);
-    const { currentUser, posts, following} = useTypedSelector(state => state.userState);
+   
+    const [user, setUser] = useState<IUser>({
+        uid: '',
+        name: '',
+        description: '',
+        email: '',
+        image: ''
+    });
+    const [userPosts, setUserPosts] = useState<IPost[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { currentUser, posts } = useTypedSelector(state => state.userState);
+    
 
     useEffect(() => {
-    
-        if (route.params.uid === auth.currentUser?.uid) {
-            setUser(currentUser);
-            setUserPosts(posts);
-            setLoading(false)
-        } else {
-            const db = getFirestore(app);
-            const userDoc = doc(db, 'users', route.params.uid);
+        setUser(currentUser);
+        setUserPosts(posts);
+        setLoading(false);
+    }, []);
 
-            const postsDoc = doc(db, 'posts', route.params.uid);
-            const postsCol = collection(postsDoc, "userPosts");
-            const q = query(postsCol, orderBy("creation", "desc"))
+    if (loading) {
+        return (
+            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto' }}>
+                <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#00ff00" />
+                <Text style={[ text.notAvailable ]}>Loading</Text>
+            </View>
+        )
+    }
 
-            onSnapshot(userDoc, (snapshot) => {
-                if (snapshot.exists()) {
-                    navigation.setOptions({
-                        title: snapshot.data().username,
-                    })
-
-                    setUser({ uid: route.params.uid, ...snapshot.data()});
-                }
-                setLoading(false);
-            });
-
-            onSnapshot(q, (snapshot) => {
-                let posts = snapshot.docs.map(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    return { id, ...data }
-                })
-                setUserPosts(posts);
-            });
-        }
-
-        if (following.indexOf(route.params.uid) > -1) {
-            setFollowingUser(true);
-        } else {
-            setFollowingUser(false);
-        }
-    }, [route.params.uid, following, currentUser, posts])
-
-
-    return (
-        <ScrollView style={[container.container, utils.backgroundWhite]}>
+    const showEditHeader = () => {
+        return (
             <View style={[container.profileInfo]}>
-                <View style={[container.row]}>
-                    {'default' === 'default'
+                <View style={[container.row, {padding: 0}]}>
+
+                    {user?.image === 'default'
                         ?
                         (
                             <FontAwesome5 
@@ -74,19 +56,100 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                             <Image 
                                 style={[utils.profileImageBig, utils.marginBottomSmall]}
                                 source={{
-                                    uri: ''
+                                    uri: user?.image
                                 }}
                             />
                         )
                     }
 
-                    <View style={[container.container, container.horizontal, utils.justifyCenter ,utils.padding10Sides]}>
 
+                    <View style={[container.container, container.horizontal, utils.justifyCenter, utils.padding10Sides]}>
+                        <View style={[utils.justifyCenter, container.containerImage]}>
+                            <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
+                            <Text style={[text.center]}>Posts</Text>
+                        </View>
                     </View>
                 </View>
+
+                <View>
+                    <Text style={[text.bold, styles.name]}>{user?.name}</Text>
+                    <Text style={[text.bold, text.large, text.center]}>{posts.length}</Text>
+                    <Text style={[text.center]}>Posts</Text>
+                    <View style={[container.horizontal]}>
+                        {route.params.uid === auth.currentUser?.uid
+                            ?   <TouchableOpacity 
+                                    style={utils.buttonOutlined}
+                                    onPress={() => navigation.navigate('Edit')}
+                                >
+                                    <Text style={[text.bold, text.center]}>Редактировать</Text>
+                                </TouchableOpacity>
+                            :   null
+                        }
+                    </View>
+                    
+                </View>
+                
             </View>
-        </ScrollView>
+        )
+    }
+
+    return (
+        <FlatList
+            ListHeaderComponent={showEditHeader}
+            style={[container.container, utils.backgroundWhite]}
+            data={[1]}
+            renderItem={({item}) => (
+                <View style={utils.borderTopGray} key={item}>
+                    <FlatList 
+                        numColumns={3}
+                        horizontal={false}
+                        data={userPosts}
+                        renderItem={({ item })=>(
+                            <TouchableOpacity
+                                style={[container.containerImage, utils.borderWhite]}
+                                onPress={() => navigation.navigate('Post', {item, user})}
+                            >
+                                <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
+                            </TouchableOpacity>
+                            
+                        
+                        )}
+                    />
+                    
+                </View>
+            )}
+            keyExtractor={(index) => index.toString()}
+        />
     );
 };
+
+const styles = StyleSheet.create({
+    btn:{
+        padding: 12,
+        backgroundColor: '#ffdb3e',
+        borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        
+    },
+
+    viewStyle:{
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+    },
+
+    name: {
+        fontSize: 20,
+        textTransform: "capitalize",
+    },
+
+    iconLogOut: {
+        marginLeft: 10,
+        color: "white",
+    },
+
+})
 
 export default Profile;

@@ -3,11 +3,17 @@ const utils = StyleSheet.create({
     margin15: {
         margin: 15
     },
+    margin15Right: {
+        marginRight: 15
+    },
     marginBottom: {
         marginBottom: 20
     },
     marginBottomSmall: {
         marginBottom: 10
+    },
+    margin5Bottom: {
+        marginBottom: 5
     },
     justifyCenter: {
         justifyContent: 'center'
@@ -18,6 +24,14 @@ const utils = StyleSheet.create({
     backgroundWhite: {
         backgroundColor: '#fff'
     },
+    buttonOutlined: {
+        padding: 8,
+        color: 'white',
+        borderWidth: 1,
+        borderColor: 'lightgrey',
+        borderRadius: 8,
+        textAlign: 'center'
+    },
     padding15: {
         paddingTop: 15,
         paddingRight: 15,
@@ -27,6 +41,12 @@ const utils = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 80 / 2,
+    },
+    profileImageSmall: {
+        marginRight: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2
     },
     padding10Sides: {
         paddingRight: 10,
@@ -44,6 +64,9 @@ const utils = StyleSheet.create({
         borderRightWidth: 2,
         borderTopWidth: 2,
         borderColor: 'white'
+    },
+    centerHorizonta: {
+        alignItems: 'center'
     }
 });
 
@@ -75,16 +98,58 @@ const container = StyleSheet.create({
     horizontal: {
         flexDirection: 'row',
         display: 'flex'
+    },
+    form: {
+        flex: 1,
+        margin: 25
     }
 });
 
 const text = StyleSheet.create({
+    center: {
+        textAlign: 'center'
+    },
+    profileDescription: {
+        fontWeight: '300'
+    },
     bold: {
         fontWeight: '700'
     },
+    small: {
+        fontSize: 10
+    },
+    medium: {
+        fontSize: 15,
+        marginBottom: 10
+    },
     large: {
         fontSize: 20
+    },
+    green: {
+        color: 'green'
+    },
+    grey: {
+        color: 'grey'
+    },
+    changePhoto: {
+        marginTop: 5,
+        color: 'deepskyblue'
+    },
+    notAvailable: {
+        textAlign: 'center',
+        fontWeight: '700',
+        fontSize: 20
     }
+});
+
+const form = StyleSheet.create({
+    textInput: {
+        marginBottom: 10,
+        borderColor: 'gray',
+        backgroundColor: 'whitesmoke',
+        padding: 10,
+        borderRadius: 8,
+    },
 })
 
-export { utils, container, text, navbar }
+export { utils, container, text, navbar, form }

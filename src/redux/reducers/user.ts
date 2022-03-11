@@ -1,4 +1,6 @@
-import { UserAction, UserActionTypes, UserState } from "../../type/user";
+import { UserAction, UserActionTypes, UserState, IPost} from "../../type/user";
+
+
 
 const initialState: UserState = {
     currentUser: null,

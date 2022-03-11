@@ -18,7 +18,9 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                 const db = getFirestore(app);
                 const docRef = doc(db, "users", auth.currentUser?.uid ? auth.currentUser?.uid : "")
                 setDoc(docRef, {
-                    name, email
+                    name,
+                    email,
+                    image: 'default'
                 })
                 alert("Welcome baby!")
             })

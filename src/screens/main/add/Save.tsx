@@ -1,5 +1,5 @@
 import { FC, useLayoutEffect, useState } from "react"
-import { View, Text, StyleSheet, Image, TextInput } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, ScrollView } from "react-native";
 import { ActivityIndicator, Snackbar } from "react-native-paper";
 import { container, navbar, text, utils } from "../../../styles";
 import { collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
@@ -98,7 +98,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                 )
                 :
                 (
-                    <View style={container.container}>
+                    <ScrollView style={container.container}>
                         <View style={[container.container, utils.backgroundWhite, utils.padding15]}>
                             <View style={[utils.marginBottom, {width: '100%'}]}>
                                 <TextInput 
@@ -107,12 +107,19 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                                     onChangeText={(text) => setCaption(text)}
                                 />
                             </View>
-                            <View>
+                            <View style={[utils.marginBottom]}>
                                 <Image 
                                     style={[container.image, {backgroundColor: 'black'}]}
                                     source={{ uri: route.params.imageSource}}
                                 />
 
+                            </View>
+                            <View>
+                                <TextInput 
+                                    multiline={true} 
+                                    style={{ borderColor: '#ebebeb', borderWidth: 1, padding: 5, fontSize: 15, width: '100%', height: '50%' }}
+                                    placeholder="Введите контент поста..."
+                                />
                             </View>
                         </View>
                         <Snackbar
@@ -122,7 +129,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                         >
                             Something Went Wrong!
                         </Snackbar>
-                    </View>
+                    </ScrollView>
                 )
             }
 

@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {IPost, IUser} from "./user";
 
 export type RootStackParamList = {
     Landing: undefined;
@@ -8,6 +9,8 @@ export type RootStackParamList = {
     Save: SaveRoute;
     AddPost: undefined;
     Profile: ProfileRoute;
+    Edit: undefined;
+    Post: PostRoute;
 }
 
 type SaveRoute = {
@@ -18,9 +21,16 @@ type ProfileRoute = {
     uid: string;
 }
 
+type PostRoute = {
+    item: IPost;
+    user: IUser;
+}
+
 export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
 export type signUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 export type loginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export type addPostProps = NativeStackScreenProps<RootStackParamList, 'AddPost'>;
 export type saveProps = NativeStackScreenProps<RootStackParamList, 'Save'>;
 export type profileProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+export type editProfileProps = NativeStackScreenProps<RootStackParamList, 'Edit'>;
+export type postProps = NativeStackScreenProps<RootStackParamList, 'Post'>;
