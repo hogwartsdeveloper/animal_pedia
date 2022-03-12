@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IPost, IUser } from "../../../type/user";
 import { postProps } from "../../../type";
 import { container, text, utils } from "../../../styles";
@@ -49,11 +49,11 @@ const Post: FC<postProps> = ({ navigation, route }) => {
                     sourse={item.downloadURL}
                 />
             </View>
-            <View style={styles.contentPost}>
+            <View style={[styles.contentPost]}>
                 <View>
-                    <Text style={styles.titlePost}>{item.caption}</Text>
+                    <Text style={[styles.titlePost, text.bold]}>{item.caption}</Text>
                 </View>
-                <View>
+                <View style={{paddingTop: 10}}>
                     <Text>{item.content}</Text>
                 </View>
             </View>
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     },
     titlePost: {
         fontSize: 18,
-        textAlign: 'center'
+        textAlign: 'center',
     }
 })
