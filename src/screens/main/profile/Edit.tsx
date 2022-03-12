@@ -9,6 +9,7 @@ import { app, auth } from "../../../../firebase";
 import { editProfileProps } from "../../../type";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import CachedImage from "../random/CachedImage";
 
 
 const Edit: FC<editProfileProps> = ({ navigation }) => {
@@ -41,7 +42,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Feather style={navbar.image} name="check" size={24} color="green" onPress={() => {console.log({ name, description}); save()}} />
+                <Feather name="check" size={24} color="#ffdb3e" onPress={() => {console.log({ name, description}); save()}} />
             )
         })
     }, [navigation ,name, description, image, imageChanged]);
@@ -135,11 +136,16 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                     )
                     :
                     (
-                        <Image 
-                            style={[utils.profileImageBig, utils.marginBottomSmall]}
-                            source={{
-                                uri: image ? image : ''
-                            }}
+                        // <Image 
+                        //     style={[utils.profileImageBig, utils.marginBottomSmall]}
+                        //     source={{
+                        //         uri: image ? image : ''
+                        //     }}
+                        // />
+                        <CachedImage 
+                            styles={[utils.profileImageBig, utils.marginBottomSmall]}
+                            sourse={image ? image : ''}
+                            cacheKey={image ? image : ''}
                         />
                     )
                 }
