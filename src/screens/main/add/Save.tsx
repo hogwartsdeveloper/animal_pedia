@@ -1,6 +1,6 @@
 import { FC, useLayoutEffect, useState } from "react"
 import { View, Text, StyleSheet, Image, TextInput, ScrollView } from "react-native";
-import { ActivityIndicator, Snackbar } from "react-native-paper";
+import { Snackbar } from "react-native-paper";
 import { container, navbar, text, utils } from "../../../styles";
 import { collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
@@ -12,6 +12,7 @@ import Loader from "../../../components/Loader";
 
 const Save: FC<saveProps> = ({ navigation, route }) => {
     const [caption, setCaption] = useState<string>("");
+    const [content, setContent] = useState<string>('');
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -69,6 +70,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
             setDoc(colRef, {
                 downloadURL,
                 caption,
+                content,
                 creation: serverTimestamp()
             })
                 .then((result) => {
@@ -107,7 +109,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                             </View>
                             <View style={[utils.marginBottom]}>
                                 <Image 
-                                    style={[container.image, {backgroundColor: 'black'}]}
+                                    style={[container.image, {backgroundColor: 'black', aspectRatio: 2 / 1}]}
                                     source={{ uri: route.params.imageSource}}
                                 />
 
@@ -115,8 +117,10 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                             <View>
                                 <TextInput 
                                     multiline={true} 
-                                    style={{ borderColor: '#ebebeb', borderWidth: 1, padding: 5, fontSize: 15, width: '100%', height: '50%' }}
+                                    style={{ borderColor: '#ebebeb', borderWidth: 1, padding: 10, fontSize: 15, width: '100%' }}
                                     placeholder="Введите контент поста..."
+                                    value={content}
+                                    onChangeText={(content) => setContent(content)}
                                 />
                             </View>
                         </View>

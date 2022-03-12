@@ -44,7 +44,8 @@ export interface IPost {
     creation: {
         nanoseconds: number;
         seconds: number;
-    }
+    },
+    content: string;
     downloadURL: string;
     id: string;
 }
