@@ -86,6 +86,9 @@ const container = StyleSheet.create({
     image: {
         aspectRatio: 1 / 1
     },
+    imagePost: {
+        aspectRatio: 2 / 1
+    },
     profileInfo: {
         padding: 25,
         flexDirection: 'row'
