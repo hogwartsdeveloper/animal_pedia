@@ -22,7 +22,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Feather style={navbar.image} name="check" size={24} color="green" onPress={uploadingImage}/>
+                <Feather name="check" size={24} color="#ffdb3e" onPress={uploadingImage}/>
             )
         })
     })

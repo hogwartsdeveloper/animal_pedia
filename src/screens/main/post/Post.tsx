@@ -12,7 +12,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
     const [item, setItem] = useState<IPost>(route.params.item);
 
     return (
-        <ScrollView style={[container.container, utils.backgroundWhite]}>
+        <View style={[container.container, utils.backgroundWhite]}>
             <View style={[container.horizontal, { alignItems: 'center', padding: 10}]}>
                 {user ?
                     <TouchableOpacity
@@ -32,7 +32,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
                                 <CachedImage 
                                     cacheKey={user?.uid}
                                     styles={[utils.profileImageSmall]}
-                                    sourse={user.image}
+                                    sourse={user?.image? user.image : ''}
                                 />
                             )
                         }
@@ -57,7 +57,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
                     <Text>{item.content}</Text>
                 </View>
             </View>
-        </ScrollView>
+        </View>
     )
 };
 
