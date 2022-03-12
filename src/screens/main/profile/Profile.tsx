@@ -51,11 +51,10 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         )
                         :
                         (
-                            <Image 
-                                style={[utils.profileImageBig, utils.marginBottomSmall]}
-                                source={{
-                                    uri: user?.image
-                                }}
+                            <CachedImage 
+                                styles={[utils.profileImageBig, utils.marginBottomSmall]}
+                                sourse={user.image}
+                                cacheKey={user.uid}
                             />
                         )
                     }
