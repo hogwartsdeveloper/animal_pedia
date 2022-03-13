@@ -20,7 +20,9 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                 setDoc(docRef, {
                     name,
                     email,
-                    image: 'default'
+                    image: 'default',
+                    followingCount: 0,
+                    followersCount: 0
                 })
                 alert("Welcome baby!")
             })
