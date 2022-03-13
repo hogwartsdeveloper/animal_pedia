@@ -12,13 +12,7 @@ import Loader from "../../../components/Loader";
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
    
-    const [user, setUser] = useState<IUser>({
-        uid: '',
-        name: '',
-        description: '',
-        email: '',
-        image: ''
-    });
+    const [user, setUser] = useState<IUser | null>(null);
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
     const { currentUser, posts } = useTypedSelector(state => state.userState);
@@ -33,6 +27,15 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     if (loading) {
         return (
             <Loader />
+        )
+    }
+
+    if (user === null) {
+        return (
+            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto' }}>
+                <FontAwesome5 style={{ alignSelf: 'center', marginBottom: 20}} name="dizzy" size={40} color="black" />
+                <Text style={[text.notAvailable]}>User Not Found</Text>
+            </View>
         )
     }
 
@@ -53,8 +56,8 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         (
                             <CachedImage 
                                 styles={[utils.profileImageBig, utils.marginBottomSmall]}
-                                sourse={user.image}
-                                cacheKey={user.uid}
+                                sourse={user?.image ? user.image: ''}
+                                cacheKey={user?.uid ? user.uid : ''}
                             />
                         )
                     }
@@ -64,6 +67,14 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         <View style={[utils.justifyCenter, container.containerImage]}>
                             <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
                             <Text style={[text.center]}>Posts</Text>
+                        </View>
+                        <View style={[utils.justifyCenter, container.containerImage]}>
+                            <Text style={[text.bold, text.large, text.center]}>{user.followersCount}</Text>
+                            <Text style={[text.center]}>Followers</Text>
+                        </View>
+                        <View style={[utils.justifyCenter, container.containerImage]}>
+                            <Text style={[text.bold, text.large, text.center]}>{user.followingCount}</Text>
+                            <Text style={[text.center]}>Following</Text>
                         </View>
                     </View>
                 </View>
@@ -91,32 +102,30 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     }
 
     return (
-        <FlatList
-            ListHeaderComponent={showEditHeader}
-            style={[container.container, utils.backgroundWhite]}
-            data={[1]}
-            renderItem={({item}) => (
-                <View style={utils.borderTopGray} key={item}>
-                    <FlatList 
-                        numColumns={3}
-                        horizontal={false}
-                        data={userPosts}
-                        renderItem={({ item })=>(
-                            <TouchableOpacity
-                                style={[container.containerImage, utils.borderWhite]}
-                                onPress={() => navigation.navigate('Post', {item, user})}
-                            >
-                                <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
-                            </TouchableOpacity>
-                            
+            <FlatList
+                ListHeaderComponent={showEditHeader}
+                style={[container.container, utils.backgroundWhite]}
+                data={[1]}
+                renderItem={({item}) => (
+                    <View style={utils.borderTopGray} key={item}>
+                        <FlatList 
+                            numColumns={3}
+                            horizontal={false}
+                            data={userPosts}
+                            renderItem={({ item })=>(
+                                <TouchableOpacity
+                                    style={[container.containerImage, utils.borderWhite]}
+                                    onPress={() => navigation.navigate('Post', {item, user})}
+                                >
+                                    <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
+                                </TouchableOpacity>
+                            )}
+                        />
                         
-                        )}
-                    />
-                    
-                </View>
-            )}
-            keyExtractor={(item) => item.toString()}
-        />
+                    </View>
+                )}
+                keyExtractor={(item) => item.toString()}
+            />
     );
 };
 
