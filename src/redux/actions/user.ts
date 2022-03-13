@@ -4,6 +4,12 @@ import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
 
 
+export function clearData() {
+    return (dispatch: Dispatch<UserAction>) => {
+        dispatch({ type: UserActionTypes.CLEAR_DATA })
+    }
+}
+
 export function fetchUser() {
     return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);
