@@ -17,13 +17,14 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
     const { currentUser, posts } = useTypedSelector(state => state.userState);
+    const [following, setFollowing] = useState(false);
     
 
     useEffect(() => {
         setUser(currentUser);
         setUserPosts(posts);
         setLoading(false);        
-    }, []);
+    }, [route.params.uid, currentUser, posts]);
 
     if (loading) {
         return (
@@ -42,16 +43,21 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     const onFollow = () => {
         const db = getFirestore(app);
-        const followRef = doc(db, 'following', auth.currentUser?.uid);
-        const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
-        setDoc(userFollowRef, {});
+        if (auth.currentUser?.uid) {
+            const followRef = doc(db, 'following', auth.currentUser?.uid);
+            const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
+            setDoc(userFollowRef, {});
+        }
+        
     };
 
     const onUnfollow = async() => {
         const db = getFirestore(app);
-        const followRef = doc(db, 'following', auth.currentUser?.uid);
-        const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
-        deleteDoc(userFollowRef);
+        if (auth.currentUser?.uid) {
+            const followRef = doc(db, 'following', auth.currentUser?.uid);
+            const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
+            deleteDoc(userFollowRef);
+        }
     }
 
     const showEditHeader = () => {
@@ -103,7 +109,27 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                                 >
                                     <Text style={[text.bold, text.center]}>Редактировать</Text>
                                 </TouchableOpacity>
-                            :   null
+                            :   (
+                                <View style={[container.horizontal]}>
+                                    {following ? (
+                                        <TouchableOpacity
+                                            style={[utils.buttonOutlined, container.container, utils.margin15Right]}
+                                            onPress={onUnfollow}
+                                        >
+                                            <Text style={[text.bold, text.center, text.green]}>Following</Text>
+                                        </TouchableOpacity>
+                                    )
+                                        : (
+                                            <TouchableOpacity
+                                                style={[utils.buttonOutlined, container.container, utils.margin15Right]}
+                                                onPress={onFollow}
+                                            >
+                                                <Text style={[text.bold, text.center, text.green]}>Follow</Text>
+                                            </TouchableOpacity>
+                                        )
+                                    }
+                                </View>
+                            )
                         }
                     </View>
                     
