@@ -1,5 +1,5 @@
 export interface UserState {
-    currentUser: IUser;
+    currentUser: IUser | null;
     posts: IPost[];
     chats: any[];
     following: any[]
@@ -56,4 +56,6 @@ export type IUser = {
     uid: string;
     image: string;
     description: string;
+    followingCount: 0,
+    followersCount: 0
 }

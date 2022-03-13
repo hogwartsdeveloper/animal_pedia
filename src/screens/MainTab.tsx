@@ -1,7 +1,7 @@
 import { auth } from "../../firebase";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { PhotographicScreen, ProfileScreen, FeedScreen } from "./index";
+import { PhotographicScreen, ProfileScreen, FeedScreen, SearchScreen } from "./index";
 import { useEffect } from "react";
 import { useActions } from "../hooks/useActions";
 
@@ -9,15 +9,13 @@ import { useActions } from "../hooks/useActions";
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
-    const { fetchUser, fetchUserPosts } = useActions();
-
-    const logout = () => {
-        auth.signOut();
-    }
+    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing } = useActions();
 
     useEffect(() => {
+        clearData();
         fetchUser();
         fetchUserPosts();
+        fetchUserFollowing();
     }, [])
 
     return (
@@ -31,6 +29,15 @@ const MainTab = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="home" color={color} size={26} />
+                    )
+                }}
+            />
+            <Tab.Screen 
+                name="Поиск"
+                component={SearchScreen}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name='magnify' color={color} size={26} />
                     )
                 }}
             />

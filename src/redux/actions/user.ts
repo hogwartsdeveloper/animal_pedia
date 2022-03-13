@@ -1,8 +1,14 @@
-import { collection, doc, getFirestore, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
 
+
+export function clearData() {
+    return (dispatch: Dispatch<UserAction>) => {
+        dispatch({ type: UserActionTypes.CLEAR_DATA })
+    }
+}
 
 export function fetchUser() {
     return (async (dispatch: Dispatch<UserAction>) => {
@@ -41,3 +47,39 @@ export function fetchUserPosts() {
         
     })
 };
+
+export function fetchUserFollowing() {
+    return (async (dispatch: Dispatch<UserAction>) => {
+        const db = getFirestore(app);
+        if (auth.currentUser?.uid) {
+            const docRef = doc(db, 'following', auth.currentUser.uid);
+            const colRef = collection(docRef, "userFollowing")
+            onSnapshot(colRef, (snapshot) => {
+                let following = snapshot.docs.map(doc => {
+                    const id = doc.id;
+                    return id
+                });
+                dispatch({ type: UserActionTypes.USER_FOLLOWING_STATE_CHANGE, payload: following});
+            })
+        }
+    })
+};
+
+export function queryUsersByUsername(username: string) {
+    return new Promise((resolve, reject) => {
+        if (username.length === 0) {
+            resolve([])
+        };
+        const db = getFirestore(app);
+        const collRef = collection(db, 'users');
+        const q = query(collRef, where('userName', '>=', username));
+        onSnapshot(q, (snapshot) => {
+            let users = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return { id, ...data};
+            });
+            resolve(users);
+        })
+    })
+}

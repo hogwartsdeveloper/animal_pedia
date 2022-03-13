@@ -8,5 +8,6 @@ import ProfileScreen from "./main/profile/Profile";
 import EditProfileScreen from "./main/profile/Edit";
 import FeedScreen from "./main/post/Feed";
 import PostScreen from "./main/post/Post";
+import SearchScreen from './main/profile/Search';
 
-export { LandingScreen,  LoginScreen, SignUpScreen, SaveScreen, PhotographicScreen, ProfileScreen, FeedScreen, EditProfileScreen, PostScreen}
+export { LandingScreen,  LoginScreen, SignUpScreen, SaveScreen, PhotographicScreen, ProfileScreen, FeedScreen, EditProfileScreen, PostScreen, SearchScreen}

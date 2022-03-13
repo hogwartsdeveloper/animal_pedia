@@ -1,12 +1,13 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore"
 import { FC, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from "react-native"
 import { app, auth } from "../../../firebase";
 import { Button, Input, Logo } from "../../components";
 import { signUpProps } from "../../type";
 
 const SignUp: FC<signUpProps> = ({ navigation }) => {
+    const [userName, setUserName] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -20,7 +21,10 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                 setDoc(docRef, {
                     name,
                     email,
-                    image: 'default'
+                    userName,
+                    image: 'default',
+                    followingCount: 0,
+                    followersCount: 0
                 })
                 alert("Welcome baby!")
             })
@@ -31,45 +35,53 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <Logo name="Animal Pedia"/>
-            <View>
-                <Input 
-                    placeholder="Введите имя" 
-                    value={name}
-                    onChangeText={(text) => setName(text)}
-                    icon={true}
-                    iconName="cat"
-                />
-                <Input 
-                    placeholder="Введите email" 
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                    icon={true}
-                    iconName="email"
-                />
-                <Input 
-                    placeholder="Введите пароль" 
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
-                    icon={true}
-                    iconName="lock"
-                />
+        <ScrollView>
+            <View style={styles.container}>
+                <Logo name="Animal Pedia"/>
+                <View>
+                    <Input 
+                        placeholder="Введите username"
+                        value={userName}
+                        onChangeText={(userName) => setUserName(userName)}
+                        icon={false}
+                    />
+                    <Input 
+                        placeholder="Введите имя" 
+                        value={name}
+                        onChangeText={(text) => setName(text)}
+                        icon={true}
+                        iconName="cat"
+                    />
+                    <Input 
+                        placeholder="Введите email" 
+                        value={email}
+                        onChangeText={(text) => setEmail(text)}
+                        icon={true}
+                        iconName="email"
+                    />
+                    <Input 
+                        placeholder="Введите пароль" 
+                        value={password}
+                        onChangeText={(text) => setPassword(text)}
+                        icon={true}
+                        iconName="lock"
+                    />
 
-                <Button 
-                    name="Создать новый аккаунт" 
-                    onPress={onSignUp} 
-                    container={true}
-                />
+                    <Button 
+                        name="Создать новый аккаунт" 
+                        onPress={onSignUp} 
+                        container={true}
+                    />
 
-                <View style={styles.linkContainer}>
-                    <Text>У вас уже есть аккаунт?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                        <Text style={styles.linkItem}>Войти</Text>
-                    </TouchableOpacity>
+                    <View style={styles.linkContainer}>
+                        <Text>У вас уже есть аккаунт?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                            <Text style={styles.linkItem}>Войти</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 };
 
