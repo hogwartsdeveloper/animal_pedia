@@ -72,7 +72,7 @@ export function queryUsersByUsername(username: string) {
         };
         const db = getFirestore(app);
         const collRef = collection(db, 'users');
-        const q = query(collRef, where('username', '>=', username), limit(10));
+        const q = query(collRef, where('userName', '>=', username));
         onSnapshot(q, (snapshot) => {
             let users = snapshot.docs.map(doc => {
                 const data = doc.data();

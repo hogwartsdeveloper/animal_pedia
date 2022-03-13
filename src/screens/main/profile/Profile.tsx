@@ -30,7 +30,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
         } else {
             setFollowingUser(false);
         }
-    }, [route.params.uid, currentUser, posts]);
+    }, [route.params.uid, currentUser, posts, following]);
 
     if (loading) {
         return (

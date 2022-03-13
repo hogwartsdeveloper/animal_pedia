@@ -1,14 +1,19 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useActions } from "../../../hooks/useActions";
 import { container, text, utils } from "../../../styles";
 import { FontAwesome5 } from "@expo/vector-icons"
 import { searchProps } from "../../../type";
 
+import { queryUsersByUsername } from "../../../redux/actions/user";
+
 const Search: FC<searchProps> = ({ navigation }) => {
     const [users, setUsers] = useState<any>([]);
 
-    const { queryUsersByUsername } = useActions();
+    useEffect(() => {
+        console.log(users);
+        
+    }, users)
 
     return (
         <View style={[utils.backgroundWhite, container.container]}>
@@ -47,7 +52,7 @@ const Search: FC<searchProps> = ({ navigation }) => {
                             )
                         }
                         <View style={utils.justifyCenter}>
-                            <Text style={text.username}>{item.username}</Text>
+                            <Text style={text.username}>{item.userName}</Text>
                             <Text style={text.name}>{item.name}</Text>
                         </View>
                     </TouchableOpacity>
