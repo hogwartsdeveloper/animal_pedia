@@ -116,7 +116,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                                     <Text style={[text.bold, text.center]}>Редактировать</Text>
                                 </TouchableOpacity>
                             :   (
-                                <View style={[container.horizontal]}>
+                                <View>
                                     {followingUser ? (
                                         <TouchableOpacity
                                             style={[utils.buttonOutlined, container.container, utils.margin15Right]}
