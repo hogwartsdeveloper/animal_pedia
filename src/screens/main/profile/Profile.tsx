@@ -16,14 +16,20 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const [user, setUser] = useState<IUser | null>(null);
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
-    const { currentUser, posts } = useTypedSelector(state => state.userState);
-    const [following, setFollowing] = useState(false);
+    const { currentUser, posts, following } = useTypedSelector(state => state.userState);
+    const [followingUser, setFollowingUser] = useState(false);
     
 
     useEffect(() => {
         setUser(currentUser);
         setUserPosts(posts);
-        setLoading(false);        
+        setLoading(false);
+
+        if (following.indexOf(route.params.uid) > -1) {
+            setFollowingUser(true);
+        } else {
+            setFollowingUser(false);
+        }
     }, [route.params.uid, currentUser, posts]);
 
     if (loading) {
@@ -111,7 +117,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                                 </TouchableOpacity>
                             :   (
                                 <View style={[container.horizontal]}>
-                                    {following ? (
+                                    {followingUser ? (
                                         <TouchableOpacity
                                             style={[utils.buttonOutlined, container.container, utils.margin15Right]}
                                             onPress={onUnfollow}

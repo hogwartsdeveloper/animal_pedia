@@ -47,3 +47,20 @@ export function fetchUserPosts() {
         
     })
 };
+
+export function fetchUserFollowing() {
+    return (async (dispatch: Dispatch<UserAction>) => {
+        const db = getFirestore(app);
+        if (auth.currentUser?.uid) {
+            const docRef = doc(db, 'following', auth.currentUser.uid);
+            const colRef = collection(docRef, "userFollowing")
+            onSnapshot(colRef, (snapshot) => {
+                let following = snapshot.docs.map(doc => {
+                    const id = doc.id;
+                    return id
+                });
+                dispatch({ type: UserActionTypes.USER_FOLLOWING_STATE_CHANGE, payload: following});
+            })
+        }
+    })
+}

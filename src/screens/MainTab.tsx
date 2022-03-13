@@ -9,12 +9,13 @@ import { useActions } from "../hooks/useActions";
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
-    const { fetchUser, fetchUserPosts, clearData } = useActions();
+    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing } = useActions();
 
     useEffect(() => {
         clearData();
         fetchUser();
         fetchUserPosts();
+        fetchUserFollowing();
     }, [])
 
     return (
