@@ -48,9 +48,18 @@ const utils = StyleSheet.create({
         height: 50,
         borderRadius: 50 / 2
     },
+    profileImage: {
+        marginRight: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2
+    },
     padding10Sides: {
         paddingRight: 10,
         paddingLeft: 10
+    },
+    padding10Top: {
+        paddingTop: 10
     },
     noPadding: {
 
@@ -67,6 +76,14 @@ const utils = StyleSheet.create({
     },
     centerHorizonta: {
         alignItems: 'center'
+    },
+    searchBar: {
+        backgroundColor: 'whitesmoke',
+        color: 'grey',
+        paddingLeft: 10,
+        borderRadius: 8,
+        height: 40,
+        marginTop: -5
     }
 });
 
@@ -142,6 +159,13 @@ const text = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '700',
         fontSize: 20
+    },
+    username: {
+        fontWeight: '600',
+        color: 'black'
+    },
+    name: {
+        color: 'gray'
     }
 });
 

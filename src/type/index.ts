@@ -9,6 +9,7 @@ export type RootStackParamList = {
     Save: SaveRoute;
     AddPost: undefined;
     Profile: ProfileRoute;
+    Search: undefined;
     Edit: undefined;
     Post: PostRoute;
 }
@@ -32,5 +33,6 @@ export type loginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export type addPostProps = NativeStackScreenProps<RootStackParamList, 'AddPost'>;
 export type saveProps = NativeStackScreenProps<RootStackParamList, 'Save'>;
 export type profileProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+export type searchProps = NativeStackScreenProps<RootStackParamList, 'Search'>;
 export type editProfileProps = NativeStackScreenProps<RootStackParamList, 'Edit'>;
 export type postProps = NativeStackScreenProps<RootStackParamList, 'Post'>;

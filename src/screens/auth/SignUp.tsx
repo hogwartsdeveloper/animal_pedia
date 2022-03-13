@@ -7,6 +7,7 @@ import { Button, Input, Logo } from "../../components";
 import { signUpProps } from "../../type";
 
 const SignUp: FC<signUpProps> = ({ navigation }) => {
+    const [userName, setUserName] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -20,6 +21,7 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                 setDoc(docRef, {
                     name,
                     email,
+                    userName,
                     image: 'default',
                     followingCount: 0,
                     followersCount: 0
@@ -36,6 +38,12 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
         <View style={styles.container}>
             <Logo name="Animal Pedia"/>
             <View>
+                <Input 
+                    placeholder="Введите username"
+                    value={userName}
+                    onChangeText={(userName) => setUserName(userName)}
+                    icon={false}
+                />
                 <Input 
                     placeholder="Введите имя" 
                     value={name}

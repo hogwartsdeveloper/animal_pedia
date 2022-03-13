@@ -1,4 +1,4 @@
-import { collection, doc, getFirestore, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
@@ -62,5 +62,24 @@ export function fetchUserFollowing() {
                 dispatch({ type: UserActionTypes.USER_FOLLOWING_STATE_CHANGE, payload: following});
             })
         }
+    })
+};
+
+export function queryUsersByUsername(username: string) {
+    return new Promise((resolve, reject) => {
+        if (username.length === 0) {
+            resolve([])
+        };
+        const db = getFirestore(app);
+        const collRef = collection(db, 'users');
+        const q = query(collRef, where('username', '>=', username), limit(10));
+        onSnapshot(q, (snapshot) => {
+            let users = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return { id, ...data};
+            });
+            resolve(users);
+        })
     })
 }
