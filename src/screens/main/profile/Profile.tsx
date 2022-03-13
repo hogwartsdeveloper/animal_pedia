@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View, StyleSheet, Image, ActivityIndicator} from "react-native";
-import { auth } from "../../../../firebase";
+import { app, auth } from "../../../../firebase";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { container, text, utils } from "../../../styles";
 import { profileProps } from "../../../type";
@@ -8,6 +8,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
 import { IPost, IUser } from "../../../type/user";
 import Loader from "../../../components/Loader";
+import { deleteDoc, doc, getFirestore, setDoc } from "firebase/firestore";
 
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
@@ -37,6 +38,20 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                 <Text style={[text.notAvailable]}>User Not Found</Text>
             </View>
         )
+    }
+
+    const onFollow = () => {
+        const db = getFirestore(app);
+        const followRef = doc(db, 'following', auth.currentUser?.uid);
+        const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
+        setDoc(userFollowRef, {});
+    };
+
+    const onUnfollow = async() => {
+        const db = getFirestore(app);
+        const followRef = doc(db, 'following', auth.currentUser?.uid);
+        const userFollowRef = doc(followRef, "userFollowing", route.params.uid)
+        deleteDoc(userFollowRef);
     }
 
     const showEditHeader = () => {
