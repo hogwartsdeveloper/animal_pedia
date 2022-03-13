@@ -21,7 +21,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     useEffect(() => {
         setUser(currentUser);
         setUserPosts(posts);
-        setLoading(false);
+        setLoading(false);        
     }, []);
 
     if (loading) {
@@ -62,7 +62,10 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         )
                     }
 
+                </View>
 
+                <View>
+                    <Text style={[text.bold, styles.name]}>{user?.name}</Text>
                     <View style={[container.container, container.horizontal, utils.justifyCenter, utils.padding10Sides]}>
                         <View style={[utils.justifyCenter, container.containerImage]}>
                             <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
@@ -77,12 +80,6 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                             <Text style={[text.center]}>Following</Text>
                         </View>
                     </View>
-                </View>
-
-                <View>
-                    <Text style={[text.bold, styles.name]}>{user?.name}</Text>
-                    <Text style={[text.bold, text.large, text.center]}>{posts.length}</Text>
-                    <Text style={[text.center]}>Posts</Text>
                     <View style={[container.horizontal]}>
                         {route.params.uid === auth.currentUser?.uid
                             ?   <TouchableOpacity 
