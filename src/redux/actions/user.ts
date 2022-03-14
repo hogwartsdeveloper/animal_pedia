@@ -1,7 +1,8 @@
 import { collection, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { Dispatch } from "redux";
+import { $CombinedState, CombinedState, Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
-import { UserAction, UserActionTypes } from "../../type/user";
+import { IUser, UserAction, UserActionTypes } from "../../type/user";
+import { UsersAction, UsersActionTypes, UsersState } from "../../type/users";
 
 
 export function clearData() {
@@ -64,6 +65,28 @@ export function fetchUserFollowing() {
         }
     })
 };
+
+export function fetchUsersData(uid: string, getPosts: any) {
+    return (async (dispatch: Dispatch<UsersAction>, getState: () => CombinedState<UsersState>) => {
+        const found = getState().users.some(el => el.uid === uid);
+        if (!found) {
+            const db = getFirestore(app);
+            const userRef = doc(db, 'users', uid);
+            onSnapshot(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    let user: any = snapshot.data();
+                    user.uid = snapshot.id;
+
+                    dispatch({ type: UsersActionTypes.USERS_DATA_STATE_CHANGE, payload: user})
+                }
+            });
+            if (getPosts) {
+                // dispatch(fetchUsersFollowingPosts(uid));
+            }
+        }
+
+    })
+}
 
 export function queryUsersByUsername(username: string) {
     return new Promise((resolve, reject) => {
