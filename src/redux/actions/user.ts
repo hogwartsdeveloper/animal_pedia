@@ -81,10 +81,22 @@ export function fetchUsersData(uid: string, getPosts: any) {
                 }
             });
             if (getPosts) {
-                // dispatch(fetchUsersFollowingPosts(uid));
+                dispatch(fetchUsersFollowingPosts(uid));
             }
         }
 
+    })
+};
+
+export function fetchUsersFollowingPosts(uid: string) {
+    return (async (dispatch: Dispatch<UsersAction>, getState: () => CombinedState<UsersState>) => {
+        const db = getFirestore(app);
+        const postsRef = doc(db, 'posts', uid);
+        const postsCol = collection(postsRef, 'userPosts');
+        const q = query(postsCol, orderBy('creation', 'desc'));
+        onSnapshot(q, (snapshot) => {
+            const uid = snapshot.docs[0].ref
+        })
     })
 }
 
