@@ -10,6 +10,18 @@ export function clearData() {
     }
 }
 
+export function fetchUsersUid() {
+    return (dispatch: Dispatch<UserAction>) => {
+        const db = getFirestore(app);
+        const collRef = collection(db, 'users');
+        onSnapshot(collRef, (snapshot) => {
+            let uid = snapshot.docs.map(doc => {
+                return doc.id;
+            });
+        })
+    }
+}
+
 export function fetchUser() {
     return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);
