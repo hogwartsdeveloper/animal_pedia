@@ -11,19 +11,15 @@ const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
     const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing, fetchUsersUid, fetchUsersPosts } = useActions();
-    const { uid, posts} = useTypedSelector(state => state.usersState);
-
+    const { uid } = useTypedSelector(state => state.usersState);
     useEffect(() => {
         clearData();
+        fetchUsersUid();
         fetchUser();
         fetchUserPosts();
         fetchUserFollowing();
-        fetchUsersUid();
-    }, [uid])
-
-    const getPosts = () => {
-        uid
-    }
+        fetchUsersPosts(uid)
+    }, [])
 
     return (
         <Tab.Navigator

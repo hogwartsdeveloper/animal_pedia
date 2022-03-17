@@ -1,9 +1,11 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { FlatList, RefreshControl, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { container, utils } from "../../../styles";
 import { IPost } from "../../../type/user";
 import BottomSheet from 'react-native-bottomsheet-reanimated'
 import Loader from "../../../components/Loader";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../hooks/useActions";
 
 interface IFeedProps {
     feed: IPost;
@@ -11,18 +13,23 @@ interface IFeedProps {
 }
 
 const Feed: FC<IFeedProps> = () => {
-    const [posts, setPosts] = useState([]);
+    const [post, setPost] = useState([]);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [unmutted, setUnmuted] = useState(null);
     const [sheetRef, setSheetRef] = useState(useRef(null));
     const [modalShow, setModalShow] = useState({ visible: false, item: null });
     const [isValid, setIsValid] = useState(true);
 
-    // const onViewableItemsChanged = useRef(({ viewableItems, changed}) => {
-    //     if (changed && changed.length > 0) {
-    //         setViewPort(changed[0].index);
-    //     }
-    // })
+    const { uid, posts } = useTypedSelector(state => state.usersState);
+    const { fetchUsersPosts } = useActions();
+
+    useEffect(() => {
+        fetchUsersPosts(uid);
+        console.log(uid);
+    }, [uid])
+
+    useEffect(() => {
+    }, [posts])
 
     return (
     

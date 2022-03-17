@@ -24,21 +24,23 @@ export function fetchUsersUid() {
     }
 }
 
-export function fetchUsersPosts(uid: string) {
+export function fetchUsersPosts(uids: string[]) {
     return (async (dispatch: Dispatch<UsersAction>) => {
         const db = getFirestore(app);
-        const docRef = doc(db, 'posts', uid);
-        const collRef = collection(docRef, 'userPosts');
-        const q = query(collRef, orderBy('creation', 'desc'));
-        onSnapshot(q, (snapshot) => {
-            const posts: any[] = [];
-            snapshot.forEach((doc) => {
-                const id = doc.id;
-                const data = doc.data();
-                posts.push({id, ...data});
+        const posts: any[] = [];
+        uids.map((uid) => {
+            const docRef = doc(db, 'posts', uid);
+            const collRef = collection(docRef, 'userPosts');
+            const q = query(collRef, orderBy('creation', 'desc'));
+            onSnapshot(q, (snapshot) => {
+                snapshot.forEach((doc) => {
+                    const id = doc.id;
+                    const data = doc.data();
+                    posts.push({id, ...data});
+                })
             })
-            dispatch({ type: UsersActionTypes.FETCH_USERS_POSTS, payload: posts});
-        })
+        })        
+        dispatch({ type: UsersActionTypes.FETCH_USERS_POSTS, payload: posts});
     })
 }
 

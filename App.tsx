@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged } from "firebase/auth";
 import { FC, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import { store } from "./src/redux";
@@ -64,13 +63,5 @@ const App: FC = () => {
         </Provider>
     )
 }
-
-const styles = StyleSheet.create({
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
 
 export default App;
