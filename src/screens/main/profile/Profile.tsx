@@ -21,14 +21,12 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     const { currentUser, posts, following } = useTypedSelector(state => state.userState);
     const { uid } = useTypedSelector(state => state.usersState);
-    const { fetchUsersUid } = useActions();
     
 
     useEffect(() => {
         setUser(currentUser);
         setUserPosts(posts);
         setLoading(false);
-        fetchUsersUid();
         console.log(uid);
         
 
