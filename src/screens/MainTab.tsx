@@ -4,12 +4,14 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { PhotographicScreen, ProfileScreen, FeedScreen, SearchScreen } from "./index";
 import { useEffect } from "react";
 import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
-    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing, fetchUsersUid } = useActions();
+    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing, fetchUsersUid, fetchUsersPosts } = useActions();
+    const { uid, posts} = useTypedSelector(state => state.usersState);
 
     useEffect(() => {
         clearData();
@@ -17,7 +19,11 @@ const MainTab = () => {
         fetchUserPosts();
         fetchUserFollowing();
         fetchUsersUid();
-    }, [])
+    }, [uid])
+
+    const getPosts = () => {
+        uid
+    }
 
     return (
         <Tab.Navigator
