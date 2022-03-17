@@ -2,6 +2,7 @@ import { collection, doc, getFirestore, limit, onSnapshot, orderBy, query, where
 import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
+import { UsersAction, UsersActionTypes } from "../../type/users";
 
 
 export function clearData() {
@@ -11,13 +12,14 @@ export function clearData() {
 }
 
 export function fetchUsersUid() {
-    return (dispatch: Dispatch<UserAction>) => {
+    return (dispatch: Dispatch<UsersAction>) => {
         const db = getFirestore(app);
         const collRef = collection(db, 'users');
         onSnapshot(collRef, (snapshot) => {
-            let uid = snapshot.docs.map(doc => {
+            let uids = snapshot.docs.map(doc => {
                 return doc.id;
             });
+            dispatch({ type: UsersActionTypes.FETCH_USERS_UID, payload: uids })
         })
     }
 }

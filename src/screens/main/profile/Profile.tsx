@@ -9,6 +9,7 @@ import CachedImage from "../random/CachedImage";
 import { IPost, IUser } from "../../../type/user";
 import Loader from "../../../components/Loader";
 import { deleteDoc, doc, getFirestore, setDoc } from "firebase/firestore";
+import { useActions } from "../../../hooks/useActions";
 
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
@@ -16,14 +17,20 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const [user, setUser] = useState<IUser | null>(null);
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
-    const { currentUser, posts, following } = useTypedSelector(state => state.userState);
     const [followingUser, setFollowingUser] = useState(false);
+
+    const { currentUser, posts, following } = useTypedSelector(state => state.userState);
+    const { uid } = useTypedSelector(state => state.usersState);
+    const { fetchUsersUid } = useActions();
     
 
     useEffect(() => {
         setUser(currentUser);
         setUserPosts(posts);
         setLoading(false);
+        fetchUsersUid();
+        console.log(uid);
+        
 
         if (following.indexOf(route.params.uid) > -1) {
             setFollowingUser(true);
