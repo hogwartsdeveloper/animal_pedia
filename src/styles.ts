@@ -28,7 +28,7 @@ const utils = StyleSheet.create({
         padding: 8,
         color: 'white',
         borderWidth: 1,
-        borderColor: 'lightgrey',
+        borderColor: '#ffdb3e',
         borderRadius: 8,
         textAlign: 'center'
     },

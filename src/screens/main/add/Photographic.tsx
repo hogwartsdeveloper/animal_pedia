@@ -127,15 +127,15 @@ const Photographic: FC<addPostProps> = ({ navigation }) => {
                     </View>
                 <View style={{ justifyContent: 'flex-end', alignItems: 'center', marginRight: 20, marginVertical: 10, flexDirection: 'row' }}>
                     <TouchableOpacity
-                        style={{ alignItems: 'center', backgroundColor: 'gray', paddingHorizontal: 20, paddingVertical: 10, 
-                                    marginRight: 15, borderRadius: 50, borderWidth: 1, borderColor: 'black' 
+                        style={{ alignItems: 'center', backgroundColor: '#ffdb3e', paddingHorizontal: 20, paddingVertical: 10, 
+                                    marginRight: 15, borderRadius: 50, borderWidth: 1, borderColor: '#ffdb3e' 
                                 }}
                         onPress={() => handleGoToSaveOnGalleryPick()}
                     >
                         <Text style={{ fontWeight: 'bold', color: 'white', paddingBottom: 1}}>Continue</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{ alignItems: 'center', backgroundColor: 'gray', borderRadius: 50, borderWidth: 1, borderColor: 'black'}}
+                        style={{ alignItems: 'center', backgroundColor: '#ffdb3e', borderRadius: 50, borderWidth: 1, borderColor: '#ffdb3e'}}
                         onPress={() => setShowGallery(false)}
                     >
                         <Feather style={{ padding: 10 }} name={"camera"} size={20} color="white" />
