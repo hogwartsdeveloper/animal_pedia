@@ -57,6 +57,22 @@ export function fetchUser() {
     })
 };
 
+export function fetchUsers(uids: string[]) {
+    return (async (dispatch: Dispatch<UsersAction>) => {
+        const db = getFirestore(app);
+        const posts: any[] = [];
+        uids.map((uid) => {
+            const docRef = doc(db, 'users', uid);
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    posts.push(snapshot.data())
+                }
+            })
+        })
+        dispatch({ type: UsersActionTypes.FETCH_USERS_DATA, payload: posts});
+    })
+};
+
 export function fetchUserFollowing() {
     return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);

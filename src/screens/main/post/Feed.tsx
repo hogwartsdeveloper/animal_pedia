@@ -17,10 +17,13 @@ interface IFeedProps {
 const Feed: FC<IFeedProps> = () => {
     const [usersPosts, setUsersPosts] = useState<any[]>([]);
 
+    const {fetchUsers} = useActions();
     const { posts } = useTypedSelector(state => state.userState);
+    const { uid } = useTypedSelector(state => state.usersState);
 
 
     useEffect(() => {
+        fetchUsers(uid);
         setUsersPosts(posts);
         console.log(posts);
         

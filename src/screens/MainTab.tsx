@@ -17,7 +17,7 @@ const MainTab = () => {
         fetchUsersUid();
         fetchUser();
         fetchUserPosts();
-        fetchUserFollowing();        
+        fetchUserFollowing();
     }, [])
 
     return (
