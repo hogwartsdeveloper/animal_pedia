@@ -21,7 +21,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
 
     useEffect(() => {
         setUser(currentUser);
-        setUserPosts(posts);
+        setUserPosts(posts.filter(post => post.uid === route.params.uid));
         setLoading(false);
         
 

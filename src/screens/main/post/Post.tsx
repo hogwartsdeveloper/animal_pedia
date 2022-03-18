@@ -1,11 +1,10 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IPost, IUser } from "../../../type/user";
 import { postProps } from "../../../type";
 import { container, text, utils } from "../../../styles";
 import CachedImage from "../random/CachedImage";
-import { ScrollView } from "react-native-gesture-handler";
 
 const Post: FC<postProps> = ({ navigation, route }) => {
     const [user, setUser] = useState<IUser | null>(route.params.user);
