@@ -60,16 +60,16 @@ export function fetchUser() {
 export function fetchUsers(uids: string[]) {
     return (async (dispatch: Dispatch<UsersAction>) => {
         const db = getFirestore(app);
-        const posts: any[] = [];
+        const users: any[] = [];
         uids.map((uid) => {
             const docRef = doc(db, 'users', uid);
             onSnapshot(docRef, (snapshot) => {
                 if (snapshot.exists()) {
-                    posts.push(snapshot.data())
+                    users.push(snapshot.data())
                 }
             })
         })
-        dispatch({ type: UsersActionTypes.FETCH_USERS_DATA, payload: posts});
+        dispatch({ type: UsersActionTypes.FETCH_USERS_DATA, payload: users});
     })
 };
 

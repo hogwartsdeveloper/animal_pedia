@@ -159,7 +159,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                             renderItem={({ item })=>(
                                 <TouchableOpacity
                                     style={[container.containerImage, utils.borderWhite]}
-                                    onPress={() => navigation.navigate('Post', {item, user})}
+                                    onPress={() => navigation.navigate('Post', {item})}
                                 >
                                     <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image}/>
                                 </TouchableOpacity>

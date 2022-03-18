@@ -12,6 +12,7 @@ export type RootStackParamList = {
     Search: undefined;
     Edit: undefined;
     Post: PostRoute;
+    Feed: undefined;
 }
 
 type SaveRoute = {
@@ -24,7 +25,6 @@ type ProfileRoute = {
 
 type PostRoute = {
     item: IPost;
-    user: IUser;
 }
 
 export type landingProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
@@ -36,3 +36,4 @@ export type profileProps = NativeStackScreenProps<RootStackParamList, 'Profile'>
 export type searchProps = NativeStackScreenProps<RootStackParamList, 'Search'>;
 export type editProfileProps = NativeStackScreenProps<RootStackParamList, 'Edit'>;
 export type postProps = NativeStackScreenProps<RootStackParamList, 'Post'>;
+export type feedProps = NativeStackScreenProps<RootStackParamList, 'Feed'>;

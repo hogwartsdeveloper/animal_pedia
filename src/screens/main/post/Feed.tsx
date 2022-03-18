@@ -8,25 +8,17 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { useActions } from "../../../hooks/useActions";
 import CachedImage from "../random/CachedImage";
 import { PostScreen } from "../..";
+import { feedProps } from "../../../type";
 
-interface IFeedProps {
-    feed: IPost;
-    reload: () => void
-}
 
-const Feed: FC<IFeedProps> = () => {
+const Feed: FC<feedProps> = ({ navigation }) => {
     const [usersPosts, setUsersPosts] = useState<any[]>([]);
 
-    const {fetchUsers} = useActions();
     const { posts } = useTypedSelector(state => state.userState);
-    const { uid } = useTypedSelector(state => state.usersState);
 
 
     useEffect(() => {
-        fetchUsers(uid);
         setUsersPosts(posts);
-        console.log(posts);
-        
     }, [posts])
 
     return (
@@ -40,6 +32,7 @@ const Feed: FC<IFeedProps> = () => {
                 renderItem={({ item, index}) => (
                     <TouchableOpacity
                         style={[container.containerImage, utils.borderWhite]}
+                        onPress={() => navigation.navigate('Post', {item})}
                     >
                         <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image} />
                     </TouchableOpacity>
