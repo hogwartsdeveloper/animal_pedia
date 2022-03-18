@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { FlatList, RefreshControl, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, RefreshControl, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { container, utils } from "../../../styles";
 import { IPost } from "../../../type/user";
 import BottomSheet from 'react-native-bottomsheet-reanimated'
@@ -22,28 +22,26 @@ const Feed: FC<IFeedProps> = () => {
 
     useEffect(() => {
         setUsersPosts(posts);
-        console.log(usersPosts);
+        console.log(posts);
         
     }, [posts])
 
     return (
     
-        // <View style={[container.container, utils.backgroundWhite]}>
-        //     <FlatList 
-        //         numColumns={1}
-        //         horizontal={false}
-        //         data={posts}
-        //         keyExtractor={(item, index) => index.toString()}
-        //         renderItem={({ item, index}) => (
-        //             <View key={index} style={[container.containerImage, utils.borderWhite]}>
-        //                 <Text>{item.caption}</Text>
-        //                 <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image} />
-        //             </View>
-        //         )}
-        //     />
-        // </View>
-        <View>
-            <Text>{posts[0] ? posts[0].caption: ''}</Text>
+        <View style={[container.container, utils.backgroundWhite]}>
+            <FlatList 
+                numColumns={1}
+                horizontal={false}
+                data={posts}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index}) => (
+                    <TouchableOpacity
+                        style={[container.containerImage, utils.borderWhite]}
+                    >
+                        <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image} />
+                    </TouchableOpacity>
+                )}
+            />
         </View>
     );
 };
