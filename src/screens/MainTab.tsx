@@ -1,7 +1,7 @@
 import { auth } from "../../firebase";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { PhotographicScreen, ProfileScreen, FeedScreen, SearchScreen } from "./index";
+import { PhotographicScreen, ProfileScreen, FeedScreen, SearchScreen, DashboardScreen } from "./index";
 import { useEffect } from "react";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
@@ -24,15 +24,31 @@ const MainTab = () => {
             activeColor='#111'
             barStyle={{ backgroundColor: '#ffdb3e' }}
         >
-            <Tab.Screen 
-                name="Лента" 
-                component={FeedScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
-                    )
-                }}
-            />
+            {currentUser?.role === 'admin'
+                ? (
+                    <Tab.Screen 
+                        name="Dashboard"
+                        component={DashboardScreen}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="monitor-dashboard" size={26} color={color} />
+                            )
+                        }}
+                    />
+                )
+                : (
+                    <Tab.Screen 
+                        name="Лента" 
+                        component={FeedScreen}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="home" color={color} size={26} />
+                            )
+                        }}
+                    />
+                )
+            }
+
             <Tab.Screen 
                 name="Поиск"
                 component={SearchScreen}

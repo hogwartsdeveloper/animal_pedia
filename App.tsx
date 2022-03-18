@@ -5,7 +5,16 @@ import { FC, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import { store } from "./src/redux";
-import { LandingScreen, LoginScreen, SignUpScreen, SaveScreen, ProfileScreen, EditProfileScreen, PostScreen } from "./src/screens";
+import { 
+    LandingScreen, 
+    LoginScreen, 
+    SignUpScreen, 
+    SaveScreen, 
+    ProfileScreen, 
+    EditProfileScreen, 
+    PostScreen, 
+    DashboardScreen 
+} from "./src/screens";
 import MainTab from "./src/screens/MainTab";
 import { RootStackParamList } from "./src/type";
 import { LogBox } from "react-native";
@@ -58,6 +67,7 @@ const App: FC = () => {
                     <Stack.Screen name='Profile' component={ProfileScreen} />
                     <Stack.Screen name='Edit' component={EditProfileScreen} />
                     <Stack.Screen name='Post' component={PostScreen} />
+                    <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
