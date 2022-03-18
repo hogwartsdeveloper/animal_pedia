@@ -22,6 +22,8 @@ const Feed: FC<IFeedProps> = () => {
 
     useEffect(() => {
         setUsersPosts(posts);
+        console.log(usersPosts);
+        
     }, [posts])
 
     return (

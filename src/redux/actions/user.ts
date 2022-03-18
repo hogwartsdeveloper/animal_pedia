@@ -28,12 +28,14 @@ export function fetchUserPosts() {
     return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);
         const postsColl = collection(db, 'posts');
-        // const q = query(postsColl, where('approved', '==', 'false'))
 
         onSnapshot(postsColl, (snapshot) => {
-            const posts = snapshot.docs;
-            console.log(posts);
-            
+            const posts = snapshot.docs.map((doc) => {
+                const id = doc.id;
+                const data = doc.data();
+                return {id, ...data};      
+            });
+        
             dispatch({ type: UserActionTypes.USER_POSTS_STATE_CHANGE, payload: posts})
         })
     })
