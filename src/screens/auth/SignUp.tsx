@@ -15,7 +15,7 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
     const onSignUp = () => {
         if(name && email && password) {
             createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
+            .then(() => {
                 const db = getFirestore(app);
                 const docRef = doc(db, "users", auth.currentUser?.uid ? auth.currentUser?.uid : "")
                 setDoc(docRef, {
@@ -23,6 +23,7 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                     email,
                     userName,
                     image: 'default',
+                    role: 'zoologist'
                 })
                 alert("Welcome baby!")
             })

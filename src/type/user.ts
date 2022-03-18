@@ -56,6 +56,5 @@ export type IUser = {
     uid: string;
     image: string;
     description: string;
-    followingCount: 0,
-    followersCount: 0
+    role: string;
 }

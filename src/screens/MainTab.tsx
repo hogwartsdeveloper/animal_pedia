@@ -4,11 +4,13 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { PhotographicScreen, ProfileScreen, FeedScreen, SearchScreen } from "./index";
 import { useEffect } from "react";
 import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
     const { fetchUser, fetchUserPosts, clearData, fetchUsersUid } = useActions();
+    const { currentUser } = useTypedSelector(state => state.userState);
     
     useEffect(() => {
         clearData();
@@ -40,15 +42,21 @@ const MainTab = () => {
                     )
                 }}
             />
-            <Tab.Screen 
-                name="Добавить статию" 
-                component={PhotographicScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="plus-box" color={color} size={26} />
-                    )
-                }}
-            />
+            {currentUser?.role === 'zoologist'
+                ? (
+                    <Tab.Screen 
+                        name="Добавить статию" 
+                        component={PhotographicScreen}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="plus-box" color={color} size={26} />
+                            )
+                        }}
+                    />
+                )
+                : null
+            }
+
             <Tab.Screen
                 name="Профиль" 
                 component={ProfileScreen}
