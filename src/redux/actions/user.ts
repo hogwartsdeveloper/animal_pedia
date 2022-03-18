@@ -1,4 +1,4 @@
-import { collection, doc, getFirestore, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
 import { UserAction, UserActionTypes } from "../../type/user";
@@ -70,23 +70,6 @@ export function fetchUsers(uids: string[]) {
             })
         })
         dispatch({ type: UsersActionTypes.FETCH_USERS_DATA, payload: users});
-    })
-};
-
-export function fetchUserFollowing() {
-    return (async (dispatch: Dispatch<UserAction>) => {
-        const db = getFirestore(app);
-        if (auth.currentUser?.uid) {
-            const docRef = doc(db, 'following', auth.currentUser.uid);
-            const colRef = collection(docRef, "userFollowing")
-            onSnapshot(colRef, (snapshot) => {
-                let following = snapshot.docs.map(doc => {
-                    const id = doc.id;
-                    return id
-                });
-                dispatch({ type: UserActionTypes.USER_FOLLOWING_STATE_CHANGE, payload: following});
-            })
-        }
     })
 };
 

@@ -23,8 +23,6 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                     email,
                     userName,
                     image: 'default',
-                    followingCount: 0,
-                    followersCount: 0
                 })
                 alert("Welcome baby!")
             })
