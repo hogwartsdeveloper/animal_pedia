@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "animal_pedia",
-    "slug": "animal_pedia",
+    "name": "Animal Pedia",
+    "slug": "animalPedia",
+    "description": "This is app for reading articles about animals that are on the verge of extinction.",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/birdIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashBird.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
