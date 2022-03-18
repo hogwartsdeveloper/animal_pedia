@@ -65,13 +65,14 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
     const savePostData = (downloadURL: string) => {
         if (auth.currentUser?.uid) {
             const db = getFirestore(app);
-            const fireDoc = doc(db, 'posts', auth.currentUser?.uid);
-            const colRef = doc(collection(fireDoc, "userPosts"));
-            setDoc(colRef, {
+            const postColl = collection(db, 'posts');
+            setDoc(doc(postColl), {
+                uid: auth.currentUser.uid,
                 downloadURL,
                 caption,
                 content,
-                creation: serverTimestamp()
+                creation: serverTimestamp(),
+                approved: false
             })
                 .then((result) => {
                     console.log(result);

@@ -10,23 +10,15 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
-    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing, fetchUsersUid, fetchUsersPosts } = useActions();
-    const { uid } = useTypedSelector(state => state.usersState);
+    const { fetchUser, fetchUserPosts, clearData, fetchUserFollowing, fetchUsersUid } = useActions();
+    
     useEffect(() => {
         clearData();
         fetchUsersUid();
         fetchUser();
         fetchUserPosts();
-        fetchUserFollowing();
-        if (uid.length > 0) {
-            fetchUsersPosts(uid)
-        }
-        
+        fetchUserFollowing();        
     }, [])
-
-    useEffect(() => {
-        fetchUsersPosts(uid);
-    }, [uid])
 
     return (
         <Tab.Navigator

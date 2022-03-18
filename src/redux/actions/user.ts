@@ -24,23 +24,18 @@ export function fetchUsersUid() {
     }
 }
 
-export function fetchUsersPosts(uids: string[]) {
-    return (async (dispatch: Dispatch<UsersAction>) => {
+export function fetchUserPosts() {
+    return (async (dispatch: Dispatch<UserAction>) => {
         const db = getFirestore(app);
-        const posts: any[] = [];
-        uids.map((uid) => {
-            const docRef = doc(db, 'posts', uid);
-            const collRef = collection(docRef, 'userPosts');
-            const q = query(collRef, orderBy('creation', 'desc'));
-            onSnapshot(q, (snapshot) => {
-                snapshot.forEach((doc) => {
-                    const id = doc.id;
-                    const data = doc.data();
-                    posts.push({id, ...data});
-                })
-            })
-        })        
-        dispatch({ type: UsersActionTypes.FETCH_USERS_POSTS, payload: posts});
+        const postsColl = collection(db, 'posts');
+        // const q = query(postsColl, where('approved', '==', 'false'))
+
+        onSnapshot(postsColl, (snapshot) => {
+            const posts = snapshot.docs;
+            console.log(posts);
+            
+            dispatch({ type: UserActionTypes.USER_POSTS_STATE_CHANGE, payload: posts})
+        })
     })
 }
 
@@ -57,28 +52,6 @@ export function fetchUser() {
                 }
             })
         }
-    })
-}
-
-
-export function fetchUserPosts() {
-    return (async (dispatch: Dispatch<UserAction>) => {
-        const db = getFirestore(app);
-        if (auth.currentUser?.uid) {
-            const docRef = doc(db, 'posts', auth.currentUser?.uid);
-            const colRef = collection(docRef, "userPosts");
-            const q = query(colRef, orderBy("creation", "desc"));
-            onSnapshot(q, (snapshot) => {
-                const posts: any[] = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    posts.push({id, ...data});
-                })
-                dispatch({ type: UserActionTypes.USER_POSTS_STATE_CHANGE, payload: posts})
-            })
-        }
-        
     })
 };
 
