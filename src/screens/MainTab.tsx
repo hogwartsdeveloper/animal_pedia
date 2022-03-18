@@ -18,8 +18,15 @@ const MainTab = () => {
         fetchUser();
         fetchUserPosts();
         fetchUserFollowing();
-        fetchUsersPosts(uid)
+        if (uid.length > 0) {
+            fetchUsersPosts(uid)
+        }
+        
     }, [])
+
+    useEffect(() => {
+        fetchUsersPosts(uid);
+    }, [uid])
 
     return (
         <Tab.Navigator
