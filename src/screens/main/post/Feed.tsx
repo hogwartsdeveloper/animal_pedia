@@ -31,10 +31,10 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index}) => (
                     <TouchableOpacity
-                        style={[container.containerImage, utils.borderWhite]}
+                        style={[container.containerImage, utils.borderWhite, utils.marginBottom]}
                         onPress={() => navigation.navigate('Post', {item})}
                     >
-                        <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.image} />
+                        <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.imagePost} />
                     </TouchableOpacity>
                 )}
             />
