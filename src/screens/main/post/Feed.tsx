@@ -18,7 +18,7 @@ const Feed: FC<feedProps> = ({ navigation }) => {
 
 
     useEffect(() => {
-        setUsersPosts(posts);
+        setUsersPosts(posts.filter(post => post.approved === true));
     }, [posts])
 
     return (
@@ -27,7 +27,7 @@ const Feed: FC<feedProps> = ({ navigation }) => {
             <FlatList 
                 numColumns={1}
                 horizontal={false}
-                data={posts}
+                data={usersPosts}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index}) => (
                     <TouchableOpacity
