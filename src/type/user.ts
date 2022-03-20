@@ -10,6 +10,7 @@ export interface IPost {
     id: string;
     uid: string;
     user: IUser2;
+    class: string;
 }
 
 export interface IUser2 {

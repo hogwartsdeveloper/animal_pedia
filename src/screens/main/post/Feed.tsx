@@ -61,13 +61,15 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                                 )
                             }
                             <View style={{ alignSelf: 'center'}}>
-                                <Text style={[text.bold, text.medium, { marginBottom: 0}]}>{ item.user.name}</Text>
+                                <Text style={[text.medium, { marginBottom: 0}]}>{ item.user.name}</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[container.containerImage, utils.borderWhite, utils.marginBottom]}
                             onPress={() => navigation.navigate('Post', {item})}
                         >
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: "bold"}}>{item.caption}</Text>
+                            <Text style={{color: '#6b6e6c'}}>Вид: {item.class}</Text>
                             <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.imagePost} />
                         </TouchableOpacity>
                     </View>

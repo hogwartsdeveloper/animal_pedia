@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useLayoutEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import * as Updates from 'expo-updates';
-import { Image, Text, TouchableOpacity, View, TextInput, Button, Platform } from "react-native";
+import { Text, TouchableOpacity, View, TextInput, Button, Platform } from "react-native";
 import { container, form, navbar, text, utils } from "../../../styles";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { FontAwesome5, Feather } from "@expo/vector-icons";
