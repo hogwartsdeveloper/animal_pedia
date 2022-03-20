@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged } from "firebase/auth";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { auth } from "./firebase";
 import { store } from "./src/redux";
@@ -16,8 +16,8 @@ import {
     DashboardScreen 
 } from "./src/screens";
 import MainTab from "./src/screens/MainTab";
-import { RootStackParamList } from "./src/type";
-import { LogBox } from "react-native";
+import { RootStackParamList } from "./src/type/screens";
+import { LogBox, View, ActivityIndicator } from "react-native";
 import Loader from "./src/components/Loader";
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core', 'Setting a timer for a long period of time'])
@@ -42,7 +42,9 @@ const App: FC = () => {
 
     if(!loaded) {
         return (
-            <Loader />
+            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto'}}>
+                <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#ffdb3e" />
+            </View>
         )
     }
 

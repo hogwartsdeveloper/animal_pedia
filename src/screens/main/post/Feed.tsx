@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { container, text, utils } from "../../../styles";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import CachedImage from "../random/CachedImage";
@@ -7,11 +7,13 @@ import { feedProps } from "../../../type/screens";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { IPost } from "../../../type/user";
 import { useSearchPost } from "../../../hooks/useSearchPost";
+import { AnimalsClass } from "../../../type/animals";
 
 
 const Feed: FC<feedProps> = ({ navigation }) => {
     const [usersPosts, setUsersPosts] = useState<IPost[]>([]);
     const [filter, setFilter] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
     const searchedPosts = useSearchPost(usersPosts, filter)
 
     const { posts } = useTypedSelector(state => state.userState);
@@ -19,8 +21,30 @@ const Feed: FC<feedProps> = ({ navigation }) => {
 
     useEffect(() => {
         setUsersPosts(posts.filter(post => post.approved === true));
-        
+        setLoading(false);
     }, [posts])
+
+    const getClass = (animalClass: string) => {
+        
+        switch(animalClass) {
+            case 'bird':
+                return AnimalsClass.bird
+            case 'fish':
+                return AnimalsClass.fish
+            case 'mammal':
+                return AnimalsClass.mammal
+            default:
+                return ''
+        }
+    }
+
+    if (loading) {
+        return (
+            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto'}}>
+                <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#ffdb3e" />
+            </View>
+        )
+    }
 
 
     return (
@@ -69,7 +93,7 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                             onPress={() => navigation.navigate('Post', {item})}
                         >
                             <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: "bold"}}>{item.caption}</Text>
-                            <Text style={{color: '#6b6e6c'}}>Вид: {item.class}</Text>
+                            <Text style={{color: '#6b6e6c'}}>Вид: {getClass(item.class)}</Text>
                             <CachedImage sourse={item.downloadURL} cacheKey={item.id} styles={container.imagePost} />
                         </TouchableOpacity>
                     </View>

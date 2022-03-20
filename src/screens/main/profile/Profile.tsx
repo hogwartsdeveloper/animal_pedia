@@ -1,32 +1,57 @@
 import { FC, useEffect, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View, StyleSheet } from "react-native";
-import { auth } from "../../../../firebase";
+import { FlatList, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator } from "react-native";
+import { app, auth } from "../../../../firebase";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { container, text, utils } from "../../../styles";
 import { profileProps } from "../../../type/screens";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
-import { IPost, IUser } from "../../../type/user";
+import { IPost, IUser, IUser2 } from "../../../type/user";
 import Loader from "../../../components/Loader";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
    
-    const [user, setUser] = useState<IUser | null>(null);
+    const [user, setUser] = useState<IUser2 | null>(null);
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
 
     const { currentUser, posts } = useTypedSelector(state => state.userState);
 
     useEffect(() => {
-        setUser(currentUser);
         setUserPosts(posts.filter(post => post.uid === route.params.uid));
-        setLoading(false);
+        if (route.params.uid === auth.currentUser?.uid) {
+            setUser(currentUser);
+            setLoading(false);
+        } else {
+            const db = getFirestore(app);
+            const usersRef = doc(db, 'users', route.params.uid);
+            onSnapshot(usersRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    navigation.setOptions({title: snapshot.data().userName})
+                    setUser({
+                        id: snapshot.id,
+                        description: snapshot.data().description,
+                        email: snapshot.data().email,
+                        image: snapshot.data().image,
+                        name: snapshot.data().email,
+                        role: snapshot.data().role,
+                        userName: snapshot.data().userName
+                    })
+                }
+                setLoading(false)
+            })
+        }
+        
+        
         
     }, [route.params.uid, currentUser, posts ]);
 
     if (loading) {
         return (
-            <Loader />
+            <View style={{ height: '100%', justifyContent: 'center', margin: 'auto'}}>
+                <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#ffdb3e" />
+            </View>
         )
     }
 
@@ -48,7 +73,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                             <CachedImage 
                                 styles={[utils.profileImageBig, utils.marginBottomSmall]}
                                 sourse={user?.image ? user.image: ''}
-                                cacheKey={user?.uid ? user.uid : ''}
+                                cacheKey={user?.id ? user.id : ''}
                             />
                         )
                     }

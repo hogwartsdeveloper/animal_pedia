@@ -14,6 +14,7 @@ export interface IPost {
 }
 
 export interface IUser2 {
+    id?: string;
     description: string;
     email: string;
     image: string;
@@ -23,7 +24,7 @@ export interface IUser2 {
 }
 
 export interface UserState {
-    currentUser: IUser | null;
+    currentUser: IUser2 | null;
     posts: IPost[];
     chats: any[];
     following: any[]
