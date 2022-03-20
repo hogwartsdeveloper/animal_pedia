@@ -7,7 +7,6 @@ import { profileProps } from "../../../type/screens";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
 import { IPost, IUser, IUser2 } from "../../../type/user";
-import Loader from "../../../components/Loader";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 
 const Profile: FC<profileProps> = ({ navigation, route}) => {
@@ -34,7 +33,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         description: snapshot.data().description,
                         email: snapshot.data().email,
                         image: snapshot.data().image,
-                        name: snapshot.data().email,
+                        name: snapshot.data().name,
                         role: snapshot.data().role,
                         userName: snapshot.data().userName
                     })
@@ -58,9 +57,9 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const showEditHeader = () => {
         return (
             <View style={[container.profileInfo]}>
-                <View style={[container.row, {padding: 0}]}>
+                <View style={[container.container, {padding: 0}]}>
 
-                    {user?.image === 'default'
+                    {user?.image === 'default' || !user?.image
                         ?
                         (
                             <FontAwesome5 
@@ -72,16 +71,22 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
                         (
                             <CachedImage 
                                 styles={[utils.profileImageBig, utils.marginBottomSmall]}
-                                sourse={user?.image ? user.image: ''}
-                                cacheKey={user?.id ? user.id : ''}
+                                sourse={user?.image}
+                                cacheKey={route.params.uid}
                             />
                         )
                     }
 
+                    <View>
+                        <Text style={[text.bold, styles.name]}>{user?.name}</Text>
+                        <Text style={{color: '#6b6e6c'}}>{user?.role}</Text>
+                    </View>
+                    
+
                 </View>
 
                 <View>
-                    <Text style={[text.bold, styles.name]}>{user?.name}</Text>
+
                     <View style={[container.horizontal]}>
                         {route.params.uid === auth.currentUser?.uid
                             ?   <TouchableOpacity 

@@ -18,7 +18,6 @@ import {
 import MainTab from "./src/screens/MainTab";
 import { RootStackParamList } from "./src/type/screens";
 import { LogBox, View, ActivityIndicator } from "react-native";
-import Loader from "./src/components/Loader";
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core', 'Setting a timer for a long period of time'])
 

@@ -131,7 +131,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                     (
                         <FontAwesome5 
                             style={[utils.profileImageBig, utils.marginBottomSmall]}
-                            name="user-circle" size={80} color="black"
+                            name="user-circle" size={80} color="#ffdb3e"
                         />
                     )
                     :
@@ -149,7 +149,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
                         />
                     )
                 }
-                <Text style={text.changePhoto}>Change Profile Photo</Text>
+                <Text style={text.changePhoto}>Изменить фото профиля</Text>
             </TouchableOpacity>
             <TextInput 
                 value={name}
@@ -165,7 +165,7 @@ const Edit: FC<editProfileProps> = ({ navigation }) => {
             />
 
             <Button 
-                title="Logout"
+                title="Выйти"
                 onPress={onLogout}
             />
         </View>

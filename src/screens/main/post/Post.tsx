@@ -5,9 +5,24 @@ import { IPost, IUser } from "../../../type/user";
 import { postProps } from "../../../type/screens";
 import { container, text, utils } from "../../../styles";
 import CachedImage from "../random/CachedImage";
+import { AnimalsClass } from "../../../type/animals";
 
 const Post: FC<postProps> = ({ navigation, route }) => {
     const [item, setItem] = useState<IPost>(route.params.item);
+
+    const getClass = (animalClass: string) => {
+        
+        switch(animalClass) {
+            case 'bird':
+                return AnimalsClass.bird
+            case 'fish':
+                return AnimalsClass.fish
+            case 'mammal':
+                return AnimalsClass.mammal
+            default:
+                return ''
+        }
+    }
 
     return (
         <View style={[container.container, utils.backgroundWhite]}>
@@ -21,6 +36,9 @@ const Post: FC<postProps> = ({ navigation, route }) => {
             <View style={[styles.contentPost]}>
                 <View>
                     <Text style={[styles.titlePost, text.bold]}>{item.caption}</Text>
+                    <View>
+                        <Text style={{color: '#6b6e6c'}}>Вид: {getClass(item.class)}</Text>
+                    </View>
                 </View>
                 <View style={{paddingTop: 10}}>
                     <Text>{item.content}</Text>
