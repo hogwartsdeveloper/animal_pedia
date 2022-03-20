@@ -1,5 +1,5 @@
 import { FC, useLayoutEffect, useState } from "react"
-import { View, StyleSheet, Image, TextInput, ScrollView } from "react-native";
+import { View, StyleSheet, Image, TextInput, ActivityIndicator } from "react-native";
 import { Snackbar } from "react-native-paper";
 import { container, utils } from "../../../styles";
 import { collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
@@ -8,7 +8,6 @@ import { app, auth } from "../../../../firebase";
 import { saveProps } from "../../../type/screens";
 import { Feather } from "@expo/vector-icons";
 import { useActions } from "../../../hooks/useActions";
-import Loader from "../../../components/Loader";
 import { IAnimal } from "../../../type/animals";
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -107,7 +106,9 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
             {uploading
                 ?
                 (
-                    <Loader />
+                    <View style={{ height: '100%', justifyContent: 'center', margin: 'auto'}}>
+                        <ActivityIndicator style={{ alignSelf: 'center', marginBottom: 20 }} size="large" color="#ffdb3e" />
+                    </View>
                 )
                 :
                 (

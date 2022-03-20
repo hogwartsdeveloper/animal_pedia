@@ -10,7 +10,7 @@ import { useSearchPost } from "../../../hooks/useSearchPost";
 import { AnimalsClass } from "../../../type/animals";
 
 
-const Feed: FC<feedProps> = ({ navigation }) => {
+const Feed: FC<feedProps> = ({ navigation, route }) => {
     const [usersPosts, setUsersPosts] = useState<IPost[]>([]);
     const [filter, setFilter] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
@@ -68,7 +68,7 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                             style={[container.horizontal, { alignItems: 'center'}]}
                             onPress={() => navigation.navigate('Profile', {uid: item.uid})}
                         >
-                            {item.user.image === 'default'
+                            {item.user.image === 'default' || !item.user.image
                                 ? (
                                     <FontAwesome5 
                                         style={[utils.profileImageSmall]}
@@ -76,11 +76,10 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                                     />
                                 )
                                 : (
-                                    <Image 
-                                        style={[utils.profileImageSmall]}
-                                        source={{
-                                            uri: item.user.image
-                                        }}
+                                    <CachedImage
+                                        styles={utils.profileImageSmall}
+                                        sourse={item.user.image}
+                                        cacheKey={item.uid}
                                     />
                                 )
                             }

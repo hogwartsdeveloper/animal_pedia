@@ -18,7 +18,7 @@ const Profile: FC<profileProps> = ({ navigation, route}) => {
     const { currentUser, posts } = useTypedSelector(state => state.userState);
 
     useEffect(() => {
-        setUserPosts(posts.filter(post => post.uid === route.params.uid));
+        setUserPosts(posts.filter(post => post.uid === route.params.uid && post.approved === true));
         if (route.params.uid === auth.currentUser?.uid) {
             setUser(currentUser);
             setLoading(false);

@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { IPost, IUser } from "../../../type/user";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { IPost } from "../../../type/user";
 import { postProps } from "../../../type/screens";
 import { container, text, utils } from "../../../styles";
 import CachedImage from "../random/CachedImage";
@@ -25,7 +24,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
     }
 
     return (
-        <View style={[container.container, utils.backgroundWhite]}>
+        <ScrollView style={[container.container, utils.backgroundWhite]}>
             <View>
                 <CachedImage 
                     cacheKey={item.id}
@@ -44,7 +43,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
                     <Text>{item.content}</Text>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 };
 
