@@ -3,7 +3,7 @@ import { FlatList, Text, TouchableOpacity, View, StyleSheet } from "react-native
 import { auth } from "../../../../firebase";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { container, text, utils } from "../../../styles";
-import { profileProps } from "../../../type";
+import { profileProps } from "../../../type/screens";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CachedImage from "../random/CachedImage";
 import { IPost, IUser } from "../../../type/user";

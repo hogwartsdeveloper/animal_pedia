@@ -1,20 +1,31 @@
 import { FC, useLayoutEffect, useState } from "react"
-import { View, Text, StyleSheet, Image, TextInput, ScrollView } from "react-native";
+import { View, StyleSheet, Image, TextInput, ScrollView } from "react-native";
 import { Snackbar } from "react-native-paper";
-import { container, navbar, text, utils } from "../../../styles";
+import { container, utils } from "../../../styles";
 import { collection, doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
 import { app, auth } from "../../../../firebase";
-import { saveProps } from "../../../type";
+import { saveProps } from "../../../type/screens";
 import { Feather } from "@expo/vector-icons";
 import { useActions } from "../../../hooks/useActions";
 import Loader from "../../../components/Loader";
+import { IAnimal } from "../../../type/animals";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const Save: FC<saveProps> = ({ navigation, route }) => {
     const [caption, setCaption] = useState<string>("");
     const [content, setContent] = useState<string>('');
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(false);
+
+
+    const [openSelect, setOpenSelect] = useState(false);
+    const [valueSelect, setValueSelect] = useState<string | null | number | boolean>('');
+    const [itemsSelect, setItemSelect] = useState<IAnimal[]>([
+        {label: 'Млекопитающие', value: 'mammal'},
+        {label: 'Птицы', value: 'bird'},
+        {label: 'Рыбы', value: 'fish'}
+    ])
 
     const { fetchUserPosts } = useActions();
 
@@ -71,6 +82,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                 downloadURL,
                 caption,
                 content,
+                class: valueSelect,
                 creation: serverTimestamp(),
                 approved: false
             })
@@ -99,7 +111,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                 )
                 :
                 (
-                    <ScrollView style={container.container}>
+                    <View style={container.container}>
                         <View style={[container.container, utils.backgroundWhite, utils.padding15]}>
                             <View style={[utils.marginBottom, {width: '100%'}]}>
                                 <TextInput 
@@ -118,12 +130,27 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                             <View>
                                 <TextInput 
                                     multiline={true} 
-                                    style={{ borderColor: '#ebebeb', borderWidth: 1, padding: 10, fontSize: 15, width: '100%' }}
+                                    style={{ borderColor: '#ebebeb', borderWidth: 1, padding: 10, fontSize: 15, width: '100%', marginBottom: 10 }}
                                     placeholder="Введите контент поста..."
                                     value={content}
                                     onChangeText={(content) => setContent(content)}
                                 />
+
+
                             </View>
+                            <DropDownPicker 
+                                open={openSelect}
+                                value={valueSelect}
+                                items={itemsSelect}
+                                setOpen={setOpenSelect}
+                                setValue={setValueSelect}
+                                setItems={setItemSelect}
+                                placeholder='Выберите класс животных'
+                                style={{borderColor: '#ebebeb', borderWidth: 1}}
+                                placeholderStyle={{color: '#cbcbcb'}}
+                                dropDownDirection='BOTTOM'
+                                dropDownContainerStyle={{borderColor: '#ebebeb', borderWidth: 1}}
+                            />
                         </View>
                         <Snackbar
                             visible={error}
@@ -132,7 +159,7 @@ const Save: FC<saveProps> = ({ navigation, route }) => {
                         >
                             Something Went Wrong!
                         </Snackbar>
-                    </ScrollView>
+                    </View>
                 )
             }
 

@@ -8,7 +8,7 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { useActions } from "../../../hooks/useActions";
 import CachedImage from "../random/CachedImage";
 import { PostScreen } from "../..";
-import { feedProps } from "../../../type";
+import { feedProps } from "../../../type/screens";
 
 
 const Feed: FC<feedProps> = ({ navigation }) => {

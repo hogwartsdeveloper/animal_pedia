@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { auth } from "../../../firebase";
 import { Button, Input, Logo } from "../../components";
-import { loginProps } from "../../type";
+import { loginProps } from "../../type/screens";
 import { Dimensions } from "react-native";
 
 const windowWidth = Dimensions.get('window').width;

@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from "react-native"
 import { app, auth } from "../../../firebase";
 import { Button, Input, Logo } from "../../components";
-import { signUpProps } from "../../type";
+import { signUpProps } from "../../type/screens";
 
 const SignUp: FC<signUpProps> = ({ navigation }) => {
     const [userName, setUserName] = useState<string>('');

@@ -6,7 +6,7 @@ import { container, form, navbar, text, utils } from "../../../styles";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { FontAwesome5, Feather } from "@expo/vector-icons";
 import { app, auth } from "../../../../firebase";
-import { editProfileProps } from "../../../type";
+import { editProfileProps } from "../../../type/screens";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import CachedImage from "../random/CachedImage";

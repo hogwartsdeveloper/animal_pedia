@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FC } from "react";
-import { landingProps } from "../../type";
+import { landingProps } from "../../type/screens";
 import { Button, Logo } from "../../components";
 
 

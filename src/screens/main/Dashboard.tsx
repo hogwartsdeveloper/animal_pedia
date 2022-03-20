@@ -4,7 +4,7 @@ import { Button, FlatList, TouchableOpacity, View } from "react-native";
 import { app } from "../../../firebase";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { container, utils } from "../../styles";
-import { dashboardProps } from "../../type";
+import { dashboardProps } from "../../type/screens";
 import CachedImage from "./random/CachedImage";
 
 const Dashboard: FC<dashboardProps> = ({ navigation }) => {

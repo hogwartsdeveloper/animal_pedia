@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IPost, IUser } from "../../../type/user";
-import { postProps } from "../../../type";
+import { postProps } from "../../../type/screens";
 import { container, text, utils } from "../../../styles";
 import CachedImage from "../random/CachedImage";
 

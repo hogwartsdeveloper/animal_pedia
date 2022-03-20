@@ -6,7 +6,7 @@ import { FC, LegacyRef, useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewProps } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { container, utils } from "../../../styles";
-import { addPostProps } from "../../../type";
+import { addPostProps } from "../../../type/screens";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;

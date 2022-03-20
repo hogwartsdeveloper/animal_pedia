@@ -2,7 +2,7 @@ import { FC, useState } from "react"
 import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { container, text, utils } from "../../../styles";
 import { FontAwesome5 } from "@expo/vector-icons"
-import { searchProps } from "../../../type";
+import { searchProps } from "../../../type/screens";
 
 import { queryUsersByUsername } from "../../../redux/actions/user";
 
