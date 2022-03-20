@@ -9,7 +9,7 @@ export interface IPost {
     downloadURL: string;
     id: string;
     uid: string;
-    user: IUser2[];
+    user: IUser2;
 }
 
 export interface IUser2 {

@@ -5,22 +5,23 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import CachedImage from "../random/CachedImage";
 import { feedProps } from "../../../type/screens";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { IPost } from "../../../type/user";
+import { useSearchPost } from "../../../hooks/useSearchPost";
 
 
 const Feed: FC<feedProps> = ({ navigation }) => {
-    const [usersPosts, setUsersPosts] = useState<any[]>([]);
+    const [usersPosts, setUsersPosts] = useState<IPost[]>([]);
+    const [filter, setFilter] = useState<string>('');
+    const searchedPosts = useSearchPost(usersPosts, filter)
 
     const { posts } = useTypedSelector(state => state.userState);
 
 
     useEffect(() => {
         setUsersPosts(posts.filter(post => post.approved === true));
-        if (posts[0]) {
-            console.log(posts[0].user);
-            
-        }
         
     }, [posts])
+
 
     return (
     
@@ -29,15 +30,16 @@ const Feed: FC<feedProps> = ({ navigation }) => {
                 <TextInput 
                     style={utils.searchBar}
                     placeholder="Поиск статьи"
+                    value={filter}
+                    onChangeText={(text) => setFilter(text)}
                 />
             </View>
             <FlatList 
                 numColumns={1}
                 horizontal={false}
-                data={usersPosts}
-                keyExtractor={(index) => index.toString()}
-                renderItem={({ item, index}) => (
-                    <View key={index}>
+                data={searchedPosts.length > 0 ? searchedPosts : usersPosts}
+                renderItem={({ item}) => (
+                    <View key={item.id}>
                         <TouchableOpacity
                             style={[container.horizontal, { alignItems: 'center'}]}
                             onPress={() => navigation.navigate('Profile', {uid: item.uid})}
