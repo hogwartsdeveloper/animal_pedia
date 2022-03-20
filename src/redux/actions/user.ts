@@ -1,7 +1,7 @@
 import { collection, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { Dispatch } from "redux";
 import { app, auth } from "../../../firebase";
-import { UserAction, UserActionTypes } from "../../type/user";
+import { IUser2, UserAction, UserActionTypes } from "../../type/user";
 import { UsersAction, UsersActionTypes } from "../../type/users";
 
 
@@ -30,10 +30,36 @@ export function fetchUserPosts() {
         const postsColl = collection(db, 'posts');
 
         onSnapshot(postsColl, (snapshot) => {
-            const posts = snapshot.docs.map((doc) => {
-                const id = doc.id;
-                const data = doc.data();
-                return {id, ...data};      
+            const posts = snapshot.docs.map((post) => {
+                const id = post.id;
+                const data = post.data();
+                let user: IUser2 = {
+                    description: '',
+                    email: '',
+                    image: '',
+                    name: '',
+                    role: '',
+                    userName: ''
+                }
+                if (post.data()) {
+                    const userRef = doc(db, 'users', post.data().uid)
+                    onSnapshot(userRef, (snap) => {
+                        if (snap.exists()) {
+                            const userFetch = snap.data()
+                            user.description = userFetch.description
+                            user.image = userFetch.image;
+                            user.name = userFetch.name;
+                            user.role = userFetch.role;
+                            user.userName = userFetch.userName;
+                            user.email = userFetch.email;
+                            
+                        } else {
+                            console.log('User is not exists');
+                        }
+                    })
+                }
+                
+                return {id, ...data, user};      
             });
         
             dispatch({ type: UserActionTypes.USER_POSTS_STATE_CHANGE, payload: posts})

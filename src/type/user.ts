@@ -1,6 +1,29 @@
+export interface IPost {
+    approved: true;
+    caption: string;
+    content: string;
+    creation: {
+        nanoseconds: number;
+        seconds: number;
+    }
+    downloadURL: string;
+    id: string;
+    uid: string;
+    user: IUser2[];
+}
+
+export interface IUser2 {
+    description: string;
+    email: string;
+    image: string;
+    name: string;
+    role: string;
+    userName: string;
+}
+
 export interface UserState {
     currentUser: IUser | null;
-    posts: any[];
+    posts: IPost[];
     chats: any[];
     following: any[]
 }

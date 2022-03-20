@@ -23,7 +23,7 @@ const SignUp: FC<signUpProps> = ({ navigation }) => {
                     email,
                     userName,
                     image: 'default',
-                    role: 'admin'
+                    role: 'user'
                 })
                 alert("Welcome baby!")
             })

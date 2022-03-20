@@ -11,7 +11,7 @@ const Search: FC<searchProps> = ({ navigation }) => {
 
     return (
         <View style={[utils.backgroundWhite, container.container]}>
-            <View style={{ marginVertical: 30, paddingHorizontal: 20}}>
+            <View>
                 <TextInput 
                     style={utils.searchBar}
                     placeholder="Type Here..."

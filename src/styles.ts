@@ -83,7 +83,7 @@ const utils = StyleSheet.create({
         paddingLeft: 10,
         borderRadius: 8,
         height: 40,
-        marginTop: -5
+        marginTop: 2
     }
 });
 
