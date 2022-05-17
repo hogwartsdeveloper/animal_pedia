@@ -11,6 +11,7 @@ export interface IPost {
     uid: string;
     user: IUser2;
     class: string;
+    arHref: string;
 }
 
 export interface IUser2 {

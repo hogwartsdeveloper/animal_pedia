@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IPost } from "../../../type/user";
 import { postProps } from "../../../type/screens";
 import { container, text, utils } from "../../../styles";
@@ -22,6 +22,8 @@ const Post: FC<postProps> = ({ navigation, route }) => {
                 return ''
         }
     }
+    console.log(item);
+    
 
     return (
         <ScrollView style={[container.container, utils.backgroundWhite]}>
@@ -35,6 +37,7 @@ const Post: FC<postProps> = ({ navigation, route }) => {
             <View style={[styles.contentPost]}>
                 <View>
                     <Text style={[styles.titlePost, text.bold]}>{item.caption}</Text>
+                    {item.arHref ? <Button title="Посмотреть в AR" onPress={() => Linking.openURL(item.arHref)}/> : null}
                     <View>
                         <Text style={{color: '#6b6e6c'}}>Вид: {getClass(item.class)}</Text>
                     </View>
